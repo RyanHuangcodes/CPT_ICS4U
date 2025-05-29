@@ -12,10 +12,6 @@ public class MainMenu : MonoBehaviour
     {
         SceneManager.LoadScene("GameScene");
     }
-    public void OpenShop()
-    {
-        SceneManager.LoadScene("ShopScene");
-    }
 
     public void OpenPreferences()
     {

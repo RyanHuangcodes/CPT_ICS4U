@@ -422,7 +422,19 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      demon_skeleton-NESW_0: 7598103603148299777
+      demon_skeleton-NESW_1: 8354199522045915864
+      demon_skeleton-NESW_10: 7116446199592415590
+      demon_skeleton-NESW_11: 8019731726262436766
+      demon_skeleton-NESW_2: -3756732114831919923
+      demon_skeleton-NESW_3: -307947575894175231
+      demon_skeleton-NESW_4: 3864632816067725360
+      demon_skeleton-NESW_5: -407379135876302410
+      demon_skeleton-NESW_6: 6421503581984278146
+      demon_skeleton-NESW_7: 6859608937582391671
+      demon_skeleton-NESW_8: 5372792226980459034
+      demon_skeleton-NESW_9: 8749307119550737368
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

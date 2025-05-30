@@ -422,7 +422,19 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      warrior_skeleton-SWEN_0: -3953808192166918360
+      warrior_skeleton-SWEN_1: 5018180550165433812
+      warrior_skeleton-SWEN_10: 3482804164023643351
+      warrior_skeleton-SWEN_11: 5248356301533187033
+      warrior_skeleton-SWEN_2: 303851748942418874
+      warrior_skeleton-SWEN_3: -4312374657439686796
+      warrior_skeleton-SWEN_4: -3689133975487562471
+      warrior_skeleton-SWEN_5: 286968221161979241
+      warrior_skeleton-SWEN_6: 8098096674313080021
+      warrior_skeleton-SWEN_7: -4548657213339826929
+      warrior_skeleton-SWEN_8: 1717720649800616584
+      warrior_skeleton-SWEN_9: 7212205849716384014
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

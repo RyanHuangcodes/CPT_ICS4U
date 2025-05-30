@@ -422,7 +422,19 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      skeleton-NESW_0: 6211678022175455147
+      skeleton-NESW_1: 3068191867752164954
+      skeleton-NESW_10: -5521490692958346614
+      skeleton-NESW_11: 3239891340693049257
+      skeleton-NESW_2: -7067632668892535188
+      skeleton-NESW_3: 1604171258894344761
+      skeleton-NESW_4: 8831054088378440550
+      skeleton-NESW_5: 5856420754744515437
+      skeleton-NESW_6: 5015634035084281814
+      skeleton-NESW_7: -8409145912797630120
+      skeleton-NESW_8: -1186733395941752241
+      skeleton-NESW_9: -6162186480933043990
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

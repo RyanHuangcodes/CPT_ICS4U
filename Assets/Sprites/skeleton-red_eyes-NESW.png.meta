@@ -422,7 +422,19 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      skeleton-red_eyes-NESW_0: -3739454193246728202
+      skeleton-red_eyes-NESW_1: -6321154565800761182
+      skeleton-red_eyes-NESW_10: -3858454971711907768
+      skeleton-red_eyes-NESW_11: 6737307783582663982
+      skeleton-red_eyes-NESW_2: -3758995079416841566
+      skeleton-red_eyes-NESW_3: -5689336735304800933
+      skeleton-red_eyes-NESW_4: -1806993262488712353
+      skeleton-red_eyes-NESW_5: 8233964058453101034
+      skeleton-red_eyes-NESW_6: -4858649392029011890
+      skeleton-red_eyes-NESW_7: 5626763956629826572
+      skeleton-red_eyes-NESW_8: 5218008180460202724
+      skeleton-red_eyes-NESW_9: -1473636020650314622
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

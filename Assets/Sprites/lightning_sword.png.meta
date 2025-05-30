@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      lightning_sword_0: -2766862982360408101
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

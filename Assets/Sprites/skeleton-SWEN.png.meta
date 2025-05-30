@@ -422,7 +422,19 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      skeleton-SWEN_0: -3982906977253934383
+      skeleton-SWEN_1: 6026029766616564655
+      skeleton-SWEN_10: 5614062025753825338
+      skeleton-SWEN_11: 4616723891467615883
+      skeleton-SWEN_2: -7388612131954306833
+      skeleton-SWEN_3: -4792104349037186899
+      skeleton-SWEN_4: -480301537781906652
+      skeleton-SWEN_5: -4099987896516735997
+      skeleton-SWEN_6: -6459766838317391591
+      skeleton-SWEN_7: 2003188615345899882
+      skeleton-SWEN_8: 5218330959727756895
+      skeleton-SWEN_9: -5926088844534671763
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

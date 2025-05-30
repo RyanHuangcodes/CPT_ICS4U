@@ -42,4 +42,14 @@ public class Entity
     {
         _damage = damage;
     }
+
+    public float GetSpeed()
+    {
+        return _speed;
+    }
+
+    public void SetSpeed(float speed)
+    {
+        _speed = speed;
+    }
 }

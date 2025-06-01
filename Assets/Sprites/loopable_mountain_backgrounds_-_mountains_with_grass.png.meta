@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      loopable_mountain_backgrounds_-_mountains_with_grass_0: -8018018493084694149
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

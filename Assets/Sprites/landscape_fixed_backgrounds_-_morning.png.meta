@@ -147,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      landscape_fixed_backgrounds_-_morning_0: 8034790233390868610
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

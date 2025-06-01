@@ -172,7 +172,9 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Zombie-Game-5-30-2025-removebg-preview_0: -7542392953397725909
+      Zombie-Game-5-30-2025-removebg-preview_1: 6305509304311724413
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

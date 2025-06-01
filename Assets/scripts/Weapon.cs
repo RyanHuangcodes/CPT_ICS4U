@@ -1,16 +1,23 @@
 using UnityEngine;
 
-public class Weapon : MonoBehaviour
+public class Weapon
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private int damage;
+    public Weapon()
     {
-        
+        damage = damage = Random.Range(5, 50);
     }
-
-    // Update is called once per frame
-    void Update()
+    public int GetDamage()
     {
-        
+        return damage;
+    }
+    public void Use(GameObject target)
+    {
+        Entity entity = target.GetComponent<Entity>();
+        if (entity != null)
+        {
+            Debug.Log($"Attacking {target.name} for {damage} damage.");
+            entity.TakeDamage(damage);
+        }
     }
 }

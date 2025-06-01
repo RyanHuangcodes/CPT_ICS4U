@@ -1,4 +1,6 @@
-public class Entity
+using UnityEngine;
+
+public class Entity: MonoBehaviour
 {
     private int _health;
     private int _maxHealth;

@@ -16,7 +16,6 @@ public class Weapon
         Entity entity = target.GetComponent<Entity>();
         if (entity != null)
         {
-            Debug.Log($"Attacking {target.name} for {damage} damage.");
             entity.TakeDamage(damage);
         }
     }

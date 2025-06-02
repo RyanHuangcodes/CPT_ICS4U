@@ -11,4 +11,13 @@ public class Coin
         this.value = value;
         this.year = year;
     }
+    public float GetValue()
+    {
+        return value;
+    }
+
+    public int GetYear()
+    {
+        return year;
+    }
 }

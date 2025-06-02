@@ -13,12 +13,12 @@ public class MainMenu : MonoBehaviour
     }
     public void PlayGame()
     {
-        SceneManager.LoadScene("GameScene");
+        SceneManager.LoadSceneAsync("GameScene");
     }
 
     public void OpenPreferences()
     {
-        SceneManager.LoadScene("PreferencesScene");
+        SceneManager.LoadSceneAsync("PreferencesScene");
     }
     public void QuitGame()
     {

@@ -8,4 +8,19 @@ public class SceneTransitions : MonoBehaviour
         SceneManager.LoadSceneAsync("GameScene");
     }
 
+    public void PreferenceSceneTransition()
+    {
+        SceneManager.LoadSceneAsync("PreferenceScene");
+    }
+
+    public void ShopSceneTransition()
+    {
+        SceneManager.LoadSceneAsync("ShopScene");
+    }
+
+    public void ScoreSceneTransition()
+    {
+        SceneManager.LoadSceneAsync("ScoresScene");
+    }
+
 }

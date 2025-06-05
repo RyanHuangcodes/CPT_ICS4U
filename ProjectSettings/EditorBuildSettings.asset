@@ -20,6 +20,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ShopScene.unity
     guid: 2020fc70e7b3265468b9fccdd192a8cc
+  - enabled: 1
+    path: Assets/Scenes/PauseScene.unity
+    guid: 8cbec49930b593b4aa1455635fb39310
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

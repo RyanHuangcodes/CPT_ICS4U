@@ -9,7 +9,7 @@ public class MainMenu : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
     }
     public void PlayGame()
     {
@@ -54,5 +54,15 @@ public class MainMenu : MonoBehaviour
             this.coins = coins;
         }
     }
-
+    //gpt
+    private static void DeletePlayerSave()
+    {
+        string path = Path.Combine(Application.persistentDataPath, "player.json");
+        if (File.Exists(path))
+        {
+            File.Delete(path);
+            Debug.Log("Player save deleted.");
+        }
+    }
+    //end gpt
 }

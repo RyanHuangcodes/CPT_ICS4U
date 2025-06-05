@@ -20,6 +20,19 @@ public class MainMenu : MonoBehaviour
     {
         SceneManager.LoadSceneAsync("PreferencesScene");
     }
+
+    public void ReturnToMenu()
+    {
+        SceneManager.LoadSceneAsync("MainMenu");
+    }
+
+    public void PauseScreen()
+    {
+        SceneManager.LoadSceneAsync("PauseScene");
+    }
+
+
+
     public void QuitGame()
     {
         DataWrapper wrapper = new DataWrapper(coins);

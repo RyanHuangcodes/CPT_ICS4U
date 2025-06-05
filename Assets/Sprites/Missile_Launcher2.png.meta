@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Missile_Launcher2_0: 6796601663289162038
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

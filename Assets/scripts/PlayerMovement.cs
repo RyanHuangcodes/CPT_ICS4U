@@ -2,24 +2,22 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private float _moveSpeed = 10f;
-    private Rigidbody2D myBody; 
-    private float _movementX;
-    private float _movementY;
+    public float moveSpeed = 5f;
 
-    private void Awake()
-    {
-        myBody = GetComponent<Rigidbody2D>();
-    }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
+    private Rigidbody2D rb;
+    private Vector2 moveDirection;
+
+    void Start() {
+        rb = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    void Update() {
+        float moveX = Input.GetAxisRaw("Horizontal");
+        float moveY = Input.GetAxisRaw("Vertical");
+        moveDirection = new Vector2(moveX, moveY).normalized;
+    }
+
+    void FixedUpdate() {
+        rb.linearVelocity = moveDirection * moveSpeed;
     }
 }

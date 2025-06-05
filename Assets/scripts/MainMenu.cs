@@ -24,6 +24,7 @@ public class MainMenu : MonoBehaviour
     public void ReturnToMenu()
     {
         SceneManager.LoadSceneAsync("MainMenu");
+        DeleteTempData();
     }
 
     public void PauseScreen()
@@ -35,6 +36,8 @@ public class MainMenu : MonoBehaviour
 
     public void QuitGame()
     {
+        DeleteTempData();
+
         DataWrapper wrapper = new DataWrapper(coins);
 
         string json = JsonUtility.ToJson(wrapper, true);
@@ -55,7 +58,7 @@ public class MainMenu : MonoBehaviour
         }
     }
     //gpt
-    private static void DeletePlayerSave()
+    private static void DeleteTempData()
     {
         string path = Path.Combine(Application.persistentDataPath, "player.json");
         if (File.Exists(path))

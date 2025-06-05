@@ -472,7 +472,21 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      dark-set-game-button-elements-progress-bar-bright-different-forms-buttons-games-app_0: 3319104131474216926
+      dark-set-game-button-elements-progress-bar-bright-different-forms-buttons-games-app_1: 1390336921901335302
+      dark-set-game-button-elements-progress-bar-bright-different-forms-buttons-games-app_10: 2212128962248574754
+      dark-set-game-button-elements-progress-bar-bright-different-forms-buttons-games-app_11: -8706874667329131923
+      dark-set-game-button-elements-progress-bar-bright-different-forms-buttons-games-app_12: -4578223399659828401
+      dark-set-game-button-elements-progress-bar-bright-different-forms-buttons-games-app_13: -1301460317200142411
+      dark-set-game-button-elements-progress-bar-bright-different-forms-buttons-games-app_2: 164178120842397975
+      dark-set-game-button-elements-progress-bar-bright-different-forms-buttons-games-app_3: -593044358466150675
+      dark-set-game-button-elements-progress-bar-bright-different-forms-buttons-games-app_4: 987963299747273735
+      dark-set-game-button-elements-progress-bar-bright-different-forms-buttons-games-app_5: -3194182993844694017
+      dark-set-game-button-elements-progress-bar-bright-different-forms-buttons-games-app_6: -6352580007997715158
+      dark-set-game-button-elements-progress-bar-bright-different-forms-buttons-games-app_7: 3765851807472924733
+      dark-set-game-button-elements-progress-bar-bright-different-forms-buttons-games-app_8: 1429256178485185125
+      dark-set-game-button-elements-progress-bar-bright-different-forms-buttons-games-app_9: -8423560547690238812
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

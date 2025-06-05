@@ -1,20 +1,10 @@
 using UnityEngine;
-//gpt code
+using UnityEngine.SceneManagement;
+
 public class PauseManager : MonoBehaviour
 {
-    private bool isPaused = false;
-
-    public void TogglePause()
+    public void GoToPaused()
     {
-        isPaused = !isPaused;
-
-        if (isPaused)
-        {
-            Time.timeScale = 0f; // Pause
-        }
-        else
-        {
-            Time.timeScale = 1f; // Resume
-        }
+        SceneManager.LoadScene("PauseScene");
     }
 }

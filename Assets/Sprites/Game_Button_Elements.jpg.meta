@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 1d63f97a37422484f90441be6410ddb3
+guid: d968db96cc11dc345a3d5e8e327af798
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2044562099144047815
-    second: Bullet_MG_0
+      213: -6627013192755706976
+    second: Game_Button_Elements_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,23 +113,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Bullet_MG_0
+      name: Game_Button_Elements_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 20
-        height: 73
+        x: 2113
+        y: 3071
+        width: 907
+        height: 907
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7cc35b8856ebf5c10800000000000000
-      internalID: 2044562099144047815
+      spriteID: 0a308f3dc9e1804a0800000000000000
+      internalID: -6627013192755706976
       vertices: []
       indices: 
       edges: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 6687469b75371e147b91dc7cdd9793c3
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Bullet_MG_0: 2044562099144047815
+      Game_Button_Elements_0: -6627013192755706976
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

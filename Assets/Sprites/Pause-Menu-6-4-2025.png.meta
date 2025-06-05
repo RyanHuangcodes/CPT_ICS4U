@@ -1,10 +1,13 @@
 fileFormatVersion: 2
-guid: 1d63f97a37422484f90441be6410ddb3
+guid: c74ea44d2b089ac4bb3deeb451b74924
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2044562099144047815
-    second: Bullet_MG_0
+      213: 9111982011934285317
+    second: Pause-Menu-6-4-2025_0
+  - first:
+      213: 9086210759222881616
+    second: Pause-Menu-6-4-2025_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +116,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Bullet_MG_0
+      name: Pause-Menu-6-4-2025_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 20
-        height: 73
+        x: 44
+        y: 44
+        width: 450
+        height: 146
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +131,30 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7cc35b8856ebf5c10800000000000000
-      internalID: 2044562099144047815
+      spriteID: 50e971dcc53447e70800000000000000
+      internalID: 9111982011934285317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pause-Menu-6-4-2025_1
+      rect:
+        serializedVersion: 2
+        x: 569
+        y: 44
+        width: 411
+        height: 145
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 05defc17b84b81e70800000000000000
+      internalID: 9086210759222881616
       vertices: []
       indices: 
       edges: []
@@ -147,8 +172,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      Bullet_MG_0: 2044562099144047815
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

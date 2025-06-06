@@ -12,7 +12,7 @@ public class KnifeThrower : MonoBehaviour
 
     void Start()
     {
-        currentWeapon = new Weapon(20);
+        currentWeapon = new Weapon(25);
         lastThrowTime = -throwCooldown; // allow throwing right away
     }
 

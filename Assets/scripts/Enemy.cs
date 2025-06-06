@@ -4,10 +4,9 @@ using System.Collections.Generic;
 public class Enemy : Entity
 {
     private Transform player;
-    private Weapon _weapon;
     public Enemy() : base()
     {
-        _weapon = new Weapon();
+
     }
 
     //commented to fix merge problems for now

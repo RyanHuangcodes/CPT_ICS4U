@@ -8,7 +8,7 @@ public class Weapon
     public Weapon(int avgDamage)
     {
         _avgDamage = avgDamage;
-        _damage = Random.Range((int)(_avgDamage * 0.9f), (int)(_avgDamage * 1.1f));
+        _damage = Random.Range((int)(_avgDamage * 0.85f), (int)(_avgDamage * 1.15f));
     }
     public int GetDamage()
     {

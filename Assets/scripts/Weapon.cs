@@ -2,21 +2,21 @@ using UnityEngine;
 
 public class Weapon
 {
-    private int damage;
+    private int _damage;
     public Weapon()
     {
-        damage = damage = Random.Range(5, 50);
+        _damage = _damage = Random.Range(5, 50);
     }
     public int GetDamage()
     {
-        return damage;
+        return _damage;
     }
     public void Use(GameObject target)
     {
         Entity entity = target.GetComponent<Entity>();
         if (entity != null)
         {
-            entity.TakeDamage(damage);
+            entity.TakeDamage(_damage);
         }
     }
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Entity: MonoBehaviour
+public class Entity : MonoBehaviour
 {
     private int _health;
     private int _maxHealth;
@@ -23,6 +23,7 @@ public class Entity: MonoBehaviour
         if (_health < 0)
         {
             _health = 0;
+            Die();
         }
     }
 
@@ -53,5 +54,10 @@ public class Entity: MonoBehaviour
     public void SetSpeed(float speed)
     {
         _speed = speed;
+    }
+    //gpt
+    protected virtual void Die()
+    {
+        Destroy(gameObject);
     }
 }

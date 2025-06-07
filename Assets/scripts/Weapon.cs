@@ -10,6 +10,8 @@ public class Weapon
         _avgDamage = avgDamage;
         _damage = Random.Range((int)(_avgDamage * 0.85f), (int)(_avgDamage * 1.15f));
     }
+
+
     public int GetDamage()
     {
         return _damage;
@@ -18,5 +20,13 @@ public class Weapon
     public int GetAvgDamage()
     {
         return _avgDamage;
+    }
+    public void Use(GameObject target)
+    {
+        Entity entity = target.GetComponent<Entity>();
+        if (entity != null)
+        {
+            entity.TakeDamage(_damage);
+        }
     }
 }

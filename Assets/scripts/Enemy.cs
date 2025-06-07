@@ -15,26 +15,26 @@ public class Enemy : Entity
    
     public void AttackClosestTarget(List<GameObject> towers, List<GameObject> players)
     {
-        int capacity = 1;
-        (float, GameObject)[] targets = new (float, GameObject)[capacity];
-        int count = 0;
+        int _capacity = 1;
+        (float, GameObject)[] _targets = new (float, GameObject)[capacity];
+        int _count = 0;
 
         foreach (GameObject tower in towers)
         {
-            if (count >= targets.Length)
+            if (_count >= _targets.Length)
             {
-                targets = AddArrayIndex(targets);
+                _targets = AddArrayIndex(_targets);
             }
             float dist = CalculateDistance(transform.position, tower.transform.position);
-            targets[count] = (dist, tower);
-            count++;
+            _targets[_count] = (dist, tower);
+            _count++;
         }
-        if (count == 0)
+        if (_count == 0)
         {
             return;
         }
-        MergeSort(targets, 0, count - 1);
-        _weapon.Use(targets[0].Item2);
+        MergeSort(_targets, 0, _count - 1);
+        _weapon.Use(_targets[0].Item2);
         // Item2 means the Gameobject as targets are in form (float, GameObject)
         // The list needs both float which is sorted for distance and the Gameobject to know which is which
     }
@@ -43,43 +43,43 @@ public class Enemy : Entity
         if (end <= start)
             return;
 
-        int mid = start + (end - start) / 2;
+        int _mid = start + (end - start) / 2;
 
-        MergeSort(targets, start, mid);
-        MergeSort(targets, mid + 1, end);
+        MergeSort(targets, start, _mid);
+        MergeSort(targets, _mid + 1, end);
 
         (float, GameObject)[] newArray = new (float, GameObject)[end - start + 1];
-        int cursor = 0;
-        int left = start;
-        int right = mid + 1;
+        int _cursor = 0;
+        int _left = start;
+        int _right = _mid + 1;
 
-        while (left < mid + 1 && right <= end)
+        while (_left < _mid + 1 && _right <= end)
         {
-            if (targets[left].Item1 < targets[right].Item1)
+            if (targets[_left].Item1 < targets[_right].Item1)
             {
-                newArray[cursor] = targets[left];
-                left += 1;
+                newArray[_cursor] = targets[_left];
+                _left += 1;
             }
             else
             {
-                newArray[cursor] = targets[right];
-                right += 1;
+                newArray[_cursor] = targets[_right];
+                _right += 1;
             }
-            cursor += 1;
+            _cursor += 1;
         }
 
-        while (left < mid + 1)
+        while (_left < _mid + 1)
         {
-            newArray[cursor] = targets[left];
-            left += 1;
-            cursor += 1;
+            newArray[_cursor] = targets[_left];
+            _left += 1;
+            _cursor += 1;
         }
 
-        while (right <= end)
+        while (_right <= end)
         {
-            newArray[cursor] = targets[right];
-            right += 1;
-            cursor += 1;
+            newArray[_cursor] = targets[_right];
+            _right += 1;
+            _cursor += 1;
         }
 
         for (int i = 0; i < newArray.Length; i++)

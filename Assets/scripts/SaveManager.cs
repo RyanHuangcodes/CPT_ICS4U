@@ -8,7 +8,7 @@ public static class SaveManager
 
     public static void SavePlayerPosition(Vector2 pos)
     {
-        PlayerData data = new PlayerData(pos.x, pos.y);
+        SaveData data = new SaveData(pos.x, pos.y);
         string json = JsonUtility.ToJson(data);
         File.WriteAllText(path, json);
     }
@@ -18,7 +18,7 @@ public static class SaveManager
         if (!File.Exists(path)) return null;
 
         string json = File.ReadAllText(path);
-        PlayerData data = JsonUtility.FromJson<PlayerData>(json);
-        return new Vector2(data.x, data.y);
+        SaveData data = JsonUtility.FromJson<SaveData>(json);
+        return new Vector2(data.PlayerX, data.PlayerY);
     }
 }

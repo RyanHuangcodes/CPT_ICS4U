@@ -7,21 +7,21 @@ public class KnifeThrower : MonoBehaviour
     public float ThrowForce = 10f;
     public float ThrowCooldown = 1f;
 
-    private Weapon currentWeapon;
-    private float lastThrowTime;
+    private Weapon _currentWeapon;
+    private float _lastThrowTime;
 
     void Start()
     {
-        currentWeapon = new Weapon(25);
-        lastThrowTime = -ThrowCooldown; // allow throwing right away
+        _currentWeapon = new Weapon(25);
+        _lastThrowTime = -ThrowCooldown; // allow throwing right away
     }
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && Time.time >= lastThrowTime + ThrowCooldown)
+        if (Input.GetMouseButtonDown(0) && Time.time >= _lastThrowTime + ThrowCooldown)
         {
             ThrowKnife();
-            lastThrowTime = Time.time;
+            _lastThrowTime = Time.time;
         }
     }
 
@@ -47,7 +47,7 @@ public class KnifeThrower : MonoBehaviour
         knife.GetComponent<Rigidbody2D>().linearVelocity = direction * ThrowForce;
 
         // Set randomized damage
-        Weapon thrownWeapon = new Weapon(currentWeapon.GetAvgDamage());
-        knife.GetComponent<Knife>().damage = thrownWeapon.GetDamage();
+        Weapon thrownWeapon = new Weapon(_currentWeapon.GetAvgDamage());
+        knife.GetComponent<Knife>().Damage = thrownWeapon.GetDamage();
     }
 }

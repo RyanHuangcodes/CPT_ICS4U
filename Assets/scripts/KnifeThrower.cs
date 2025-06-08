@@ -2,10 +2,10 @@ using UnityEngine;
 //gpt
 public class KnifeThrower : MonoBehaviour
 {
-    public GameObject knifePrefab;
-    public Transform throwPoint;
-    public float throwForce = 10f;
-    public float throwCooldown = 1f;
+    public GameObject KnifePrefab;
+    public Transform ThrowPoint;
+    public float ThrowForce = 10f;
+    public float ThrowCooldown = 1f;
 
     private Weapon currentWeapon;
     private float lastThrowTime;
@@ -13,12 +13,12 @@ public class KnifeThrower : MonoBehaviour
     void Start()
     {
         currentWeapon = new Weapon(25);
-        lastThrowTime = -throwCooldown; // allow throwing right away
+        lastThrowTime = -ThrowCooldown; // allow throwing right away
     }
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && Time.time >= lastThrowTime + throwCooldown)
+        if (Input.GetMouseButtonDown(0) && Time.time >= lastThrowTime + ThrowCooldown)
         {
             ThrowKnife();
             lastThrowTime = Time.time;
@@ -37,14 +37,14 @@ public class KnifeThrower : MonoBehaviour
         Vector3 spawnPos = transform.position + (Vector3)(direction * 1f);
 
         // Instantiate knife at the calculated position
-        GameObject knife = Instantiate(knifePrefab, spawnPos, Quaternion.identity);
+        GameObject knife = Instantiate(KnifePrefab, spawnPos, Quaternion.identity);
 
         // Rotate knife to face direction (+45° for sprite correction)
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         knife.transform.rotation = Quaternion.Euler(0f, 0f, angle - 45f);
 
         // Launch the knife
-        knife.GetComponent<Rigidbody2D>().linearVelocity = direction * throwForce;
+        knife.GetComponent<Rigidbody2D>().linearVelocity = direction * ThrowForce;
 
         // Set randomized damage
         Weapon thrownWeapon = new Weapon(currentWeapon.GetAvgDamage());

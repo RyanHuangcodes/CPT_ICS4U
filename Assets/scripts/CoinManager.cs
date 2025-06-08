@@ -1,35 +1,37 @@
 using UnityEngine;
-using TMPro;  // TextMeshPro namespace
+using TMPro; 
 
-public class CoinManager : MonoBehaviour
+public class GoldManager : MonoBehaviour
 {
-    public static CoinManager Instance;
+    public static GoldManager Instance;
 
-    private int totalCoins = 0;
-    public TMP_Text coinText; // Drag your TextMeshPro - Text component here
+    private int _totalGold = 0;
+    public TMP_Text GoldText; 
 
     private void Awake()
     {
-        if (Instance == null)
-            Instance = this;
-        else
-            Destroy(gameObject);
     }
 
-    public void AddCoins(int amount)
+    public void AddGold(int amount)
     {
-        totalCoins += amount;
+        _totalGold += amount;
+        UpdateUI();
+    }
+
+    public void RemoveGold(int amount)
+    {
+        _totalGold -= amount;
         UpdateUI();
     }
 
     private void UpdateUI()
     {
-        if (coinText != null)
-            coinText.text = "Coins: " + totalCoins;
+        if (GoldText != null)
+            GoldText.text = "Gold: " + _totalGold;
     }
 
     public int GetCoins()
     {
-        return totalCoins;
+        return _totalGold;
     }
 }

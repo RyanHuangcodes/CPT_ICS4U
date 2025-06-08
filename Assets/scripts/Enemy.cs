@@ -4,8 +4,8 @@ using System;
 
 public class Enemy : Entity
 {
-    private Transform player;
-    public GameObject coinPrefab; // Drag coin prefab into this field
+    private Transform _player;
+    // public GameObject coinPrefab; 
     private Weapon _weapon;
 
     public Enemy() : base() {
@@ -93,6 +93,7 @@ public class Enemy : Entity
         float _distanceY = posEnemy.y - posTower.y;
         return Mathf.Sqrt(_distanceX * _distanceX + _distanceY * _distanceY);
     }
+    //AddArrayIndex() is gpt code 
     private (float, GameObject)[] AddArrayIndex((float, GameObject)[] original)
     {
         int _newSize = original.Length + 1;
@@ -100,17 +101,17 @@ public class Enemy : Entity
         Array.Copy(original, _newArray, original.Length);
         return _newArray;
     }
-    //AddArrayIndex() is gpt code 
+    
     private void Start()
     {
-        player = GameObject.FindWithTag("Player")?.transform;
+        _player = GameObject.FindWithTag("Player")?.transform;
     }
 
     private void Update()
     {
-        if (player != null)
+        if (_player != null)
         {
-            Vector2 direction = (player.position - transform.position).normalized;
+            Vector2 direction = (_player.position - transform.position).normalized;
             transform.position += (Vector3)(direction * GetSpeed() * Time.deltaTime);
         }
     }

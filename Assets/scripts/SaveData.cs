@@ -1,12 +1,12 @@
 [System.Serializable]
-public class PlayerData
+public class SaveData
 {
-    public float x;
-    public float y;
+    public float PlayerX;
+    public float PlayerY;
 
-    public PlayerData(float x, float y)
+    public SaveData(float x, float y)
     {
-        this.x = x;
-        this.y = y;
+        this.PlayerX = x;
+        this.PlayerY = y;
     }
 }

@@ -29,7 +29,7 @@ public class Knife : MonoBehaviour
     {
         if (!_hasHit)
         {
-            Destroy(gameObject); // Only destroy if it hasn't hit anything yet
+            Destroy(gameObject); 
         }
     }
 }

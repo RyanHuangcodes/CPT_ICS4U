@@ -5,16 +5,48 @@ public class GoldManager : MonoBehaviour
 {
     public static GoldManager Instance;
 
-    private int _totalGold = 0;
-    public TMP_Text GoldText; 
+    [SerializeField] private TMP_Text _goldText;
+    [SerializeField] private int _totalGold = 0;
 
     private void Awake()
     {
+        //gpt
+        // Singleton pattern
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject); // optional if you want it to persist between scenes
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        //end gpt
     }
 
+    private void Start()
+    {
+        UpdateUI();
+    }
+
+    void Update()
+    {
+        UpdateUI();
+    }
+
+    public int GetGold()
+    {
+        return _totalGold;
+    }
     public void AddGold(int amount)
     {
         _totalGold += amount;
+        UpdateUI();
+    }
+
+    public void SetGold(int amount)
+    {
+        _totalGold = amount;
         UpdateUI();
     }
 
@@ -26,8 +58,14 @@ public class GoldManager : MonoBehaviour
 
     private void UpdateUI()
     {
-        if (GoldText != null)
-            GoldText.text = "Gold: " + _totalGold;
+        if (_goldText != null)
+        {
+            _goldText.text = $"Gold: {_totalGold}";
+        }
+        else
+        {
+            _goldText = GameObject.FindWithTag("GoldText")?.GetComponent<TMP_Text>();
+        }
     }
 
     public int GetCoins()

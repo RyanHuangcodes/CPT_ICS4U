@@ -12,7 +12,7 @@ public class KnifeThrower : MonoBehaviour
 
     void Start()
     {
-        _currentWeapon = new Weapon(25);
+        _currentWeapon = new Weapon(70);
         _lastThrowTime = -ThrowCooldown; // allow throwing right away
     }
 
@@ -38,6 +38,15 @@ public class KnifeThrower : MonoBehaviour
 
         // Instantiate knife at the calculated position
         GameObject knife = Instantiate(KnifePrefab, spawnPos, Quaternion.identity);
+
+        // ✅ Ignore collision between knife and player
+        Collider2D knifeCollider = knife.GetComponent<Collider2D>();
+        Collider2D playerCollider = GetComponent<Collider2D>();
+
+        if (knifeCollider != null && playerCollider != null)
+        {
+            Physics2D.IgnoreCollision(knifeCollider, playerCollider);
+        }
 
         // Rotate knife to face direction (+45° for sprite correction)
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;

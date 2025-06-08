@@ -11,10 +11,14 @@ public class PlayerMovement : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
     }
 
-    void Update() {
+    void Update()
+    {
         float moveX = Input.GetAxisRaw("Horizontal");
         float moveY = Input.GetAxisRaw("Vertical");
         _moveDirection = new Vector2(moveX, moveY).normalized;
+        // remove rotation
+        transform.rotation = Quaternion.identity;
+
     }
 
     void FixedUpdate() {

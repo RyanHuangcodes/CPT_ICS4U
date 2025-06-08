@@ -1,17 +1,36 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using System.Collections.Generic;
+//gpt
 public class PauseManager : MonoBehaviour
 {
     public void GoToPaused()
     {
-        //gpt
         GameObject player = GameObject.FindWithTag("Player");
-        if (player != null)
+        if (player == null) return;
+
+        int gold = GoldManager.Instance.GetGold();
+
+        List<TowerSaveData> towerData = new List<TowerSaveData>();
+        foreach (Tower tower in GameObject.FindObjectsByType<Tower>(FindObjectsSortMode.None))
         {
-            SaveManager.SavePlayerPosition(player.transform.position);
+            towerData.Add(new TowerSaveData(
+                tower.name.Replace("(Clone)", "").Trim(),
+                tower.transform.position,
+                tower.GetHealth(),
+                tower.GetLevel()
+            ));
         }
-        //gpt end
+
+        SaveData data = new SaveData(
+            player.transform.position,
+            gold,
+            towerData,
+            BasePlacementTracker.Instance.GetPlacedCount(),
+            GoldMinePlacementTracker.Instance.GetPlacedCount()
+        );
+
+        SaveManager.SaveGame(data);
         SceneManager.LoadScene("PauseScene");
     }
 }

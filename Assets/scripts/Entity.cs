@@ -55,7 +55,7 @@ public class Entity : MonoBehaviour
     {
         _speed = speed;
     }
-    //gpt
+    
     protected virtual void Die()
     {
         Destroy(gameObject);

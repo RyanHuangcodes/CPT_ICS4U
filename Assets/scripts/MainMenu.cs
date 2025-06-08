@@ -22,7 +22,9 @@ public class MainMenu : MonoBehaviour
     public void ReturnToMenu()
     {
         SceneManager.LoadSceneAsync("MainMenu");
-        DeleteTempData();
+        //prevents gold from persisting between scenes
+        Destroy(GoldManager.Instance.gameObject); 
+        SaveManager.DeleteSave(); 
     }
 
     public void PauseScreen()
@@ -30,41 +32,9 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadSceneAsync("PauseScene");
     }
 
-
-
     public void QuitGame()
     {
-        DeleteTempData();
-
-        // DataWrapper wrapper = new DataWrapper(Coins);
-
-        // string json = JsonUtility.ToJson(wrapper, true);
-
-        // string savePath = Path.Combine(Application.persistentDataPath, "GameProgress.json");
-
-        // File.WriteAllText(savePath, json);
-
-        // Application.Quit();
-
+        SaveManager.DeleteSave(); 
+        Application.Quit();
     }
-    // public class DataWrapper
-    // {
-    //     public List<Coin> coins;
-
-    //     public DataWrapper(List<Coin> coins)
-    //     {
-    //         this.coins = coins;
-    //     }
-    // }
-    //gpt
-    private static void DeleteTempData()
-    {
-        string path = Path.Combine(Application.persistentDataPath, "player.json");
-        if (File.Exists(path))
-        {
-            File.Delete(path);
-            Debug.Log("Player save deleted.");
-        }
-    }
-    //end gpt
 }

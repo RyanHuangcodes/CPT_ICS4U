@@ -953,6 +953,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a21b7c1a76c14ae3b42da7cc0d8d65a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BasePrefab: {fileID: 1343696725231892735, guid: 7ceabbfe27f7c477992f960b8a8600eb, type: 3}
+  GoldMinePrefab: {fileID: 3691274078723426916, guid: 9c8062eb62bda45139071f19d5cc1c81, type: 3}
 --- !u!1 &1687446093
 GameObject:
   m_ObjectHideFlags: 0

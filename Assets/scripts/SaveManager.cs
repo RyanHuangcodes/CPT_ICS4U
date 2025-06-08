@@ -1,24 +1,28 @@
-//gpt
 using UnityEngine;
 using System.IO;
-
+//gpt
 public static class SaveManager
 {
     private static string path = Path.Combine(Application.persistentDataPath, "player.json");
 
-    public static void SavePlayerPosition(Vector2 pos)
+    public static void SaveGame(SaveData data)
     {
-        SaveData data = new SaveData(pos.x, pos.y);
-        string json = JsonUtility.ToJson(data);
+        string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(path, json);
+        Debug.Log("Game saved to " + path);
     }
 
-    public static Vector2? LoadPlayerPosition()
+    public static SaveData LoadGame()
     {
         if (!File.Exists(path)) return null;
 
         string json = File.ReadAllText(path);
-        SaveData data = JsonUtility.FromJson<SaveData>(json);
-        return new Vector2(data.PlayerX, data.PlayerY);
+        return JsonUtility.FromJson<SaveData>(json);
+    }
+
+    public static void DeleteSave()
+    {
+        if (File.Exists(path))
+            File.Delete(path);
     }
 }

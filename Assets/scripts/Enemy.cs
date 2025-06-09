@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Enemy : Entity
 {
@@ -11,9 +11,16 @@ public class Enemy : Entity
     public Vector2 _moveDirection;
     public float _lastAttackTime;
 
+    private Animator _anim;
+    private SpriteRenderer _sprite;
+    private Vector2 _lastPosition;
+
     public void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
+        _anim = GetComponent<Animator>();
+        _sprite = GetComponent<SpriteRenderer>();
+        _lastPosition = transform.position;
     }
 
     public virtual void Update()
@@ -26,6 +33,7 @@ public class Enemy : Entity
             else
             {
                 _moveDirection = Vector2.zero;
+                SetAnimation(false);
                 return;
             }
         }
@@ -34,6 +42,7 @@ public class Enemy : Entity
         if (target == null)
         {
             _moveDirection = Vector2.zero;
+            SetAnimation(false);
             return;
         }
 
@@ -44,11 +53,22 @@ public class Enemy : Entity
             Attack(target);
             _lastAttackTime = Time.time;
             _moveDirection = Vector2.zero;
+            SetAnimation(false);
         }
         else
         {
             _moveDirection = (target.position - transform.position).normalized;
+            SetAnimation(true);
         }
+
+        // Detect direction change and flip sprite
+        float deltaX = transform.position.x - _lastPosition.x;
+        if (Mathf.Abs(deltaX) > 0.01f)
+        {
+            _sprite.flipX = deltaX < 0;
+        }
+
+        _lastPosition = transform.position;
     }
 
     public void FixedUpdate()
@@ -62,14 +82,14 @@ public class Enemy : Entity
                 _rb.linearVelocity = _rb.linearVelocity.normalized * maxSpeed;
         }
     }
-    //gpt
+
     protected virtual Transform AcquireTarget()
     {
         Vector2 dirToBase = (BaseTransform.position - transform.position).normalized;
         RaycastHit2D hit = Physics2D.Raycast(transform.position, dirToBase, Mathf.Infinity, ObstacleLayers);
         return hit.collider != null ? hit.collider.transform : BaseTransform;
     }
-    //endgpt
+
     protected virtual void Attack(Transform target)
     {
         var entity = target.GetComponent<Entity>();
@@ -90,5 +110,11 @@ public class Enemy : Entity
     {
         Debug.Log("Enemy died");
         base.Die();
+    }
+
+    private void SetAnimation(bool isMoving)
+    {
+        if (_anim != null)
+            _anim.SetBool("isMoving", isMoving);
     }
 }

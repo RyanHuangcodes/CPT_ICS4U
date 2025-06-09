@@ -131,8 +131,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _health: 100
   _maxHealth: 100
-  _damage: 30
-  _speed: 3
+  _damage: 10
+  _speed: 2.5
   BaseTransform: {fileID: 0}
   ObstacleLayers:
     serializedVersion: 2

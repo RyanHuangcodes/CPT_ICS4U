@@ -734,7 +734,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1864f2cdc9d747e1811e6ebaa970804, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InitialDelay: 20
+  InitialDelay: 15
   WaveInterval: 30
   SpawnInterval: 5
   BaseEnemyCount: 24

@@ -2,10 +2,14 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour
 {
-    private int _health;
-    private int _maxHealth;
-    private int _damage;
-    private float _speed;
+    [SerializeField] private int _health;
+    [SerializeField] private int _maxHealth;
+    [SerializeField] private int _damage;
+    [SerializeField] private float _speed;
+
+    private void Awake()
+    {
+    }
 
     public int GetHealth()
     {
@@ -17,10 +21,20 @@ public class Entity : MonoBehaviour
         _health = health;
     }
 
+    public int GetMaxHealth()
+    {
+        return _maxHealth;
+    }
+
+    public void SetMaxHealth(int maxHealth)
+    {
+        _maxHealth = maxHealth;
+    }
+
     public void TakeDamage(int damage)
     {
         _health -= damage;
-        if (_health < 0)
+        if (_health <= 0)
         {
             _health = 0;
             Die();
@@ -55,7 +69,7 @@ public class Entity : MonoBehaviour
     {
         _speed = speed;
     }
-    
+
     protected virtual void Die()
     {
         Destroy(gameObject);

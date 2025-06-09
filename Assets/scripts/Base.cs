@@ -5,10 +5,9 @@ public class Base : Tower
 {
     protected override void Start()
     {
-        
-        SetHealth(300);
-        SetDamage(0);
-        SetSpeed(0f);
+        // SetHealth(300);
+        // SetDamage(0);
+        // SetSpeed(0f);
         SetInitialized(true);
     }
 

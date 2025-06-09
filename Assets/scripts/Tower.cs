@@ -4,7 +4,7 @@ public class Tower : Entity
 {
     // tracks if tower has been placed
     private bool _isInitialized = false;
-    private int _level = 1;
+    [SerializeField] private int _level = 1;
 
     public bool IsInitialized()
     {

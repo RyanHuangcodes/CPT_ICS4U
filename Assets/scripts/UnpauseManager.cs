@@ -1,11 +1,17 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
-//gpt
+
 public class UnpauseManager : MonoBehaviour
 {
+    [Header("Tower Prefabs")]
     public GameObject BasePrefab;
     public GameObject GoldMinePrefab;
+    public GameObject MachineGunPrefab;
+
+    [Header("Enemy Prefabs")]
+    public GameObject CommonEnemyPrefab;
+    public GameObject BossEnemyPrefab;  // optional
 
     private Dictionary<string, GameObject> _prefabMap;
 
@@ -19,43 +25,82 @@ public class UnpauseManager : MonoBehaviour
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
 
-        SaveData data = SaveManager.LoadGame();
-        if (data == null) return;
+        var data = SaveManager.LoadGame();
+        if (data == null)
+        {
+            Debug.LogWarning("[UnpauseManager] No save data found.");
+            return;
+        }
 
-        // Restore player position
-        GameObject player = GameObject.FindWithTag("Player");
-        if (player != null)
-            player.transform.position = data.PlayerPosition;
-
-        // Restore gold
+        // Restore player & gold
+        var player = GameObject.FindWithTag("Player");
+        if (player != null) player.transform.position = data.PlayerPosition;
         GoldManager.Instance.SetGold(data.Gold);
 
-        // Restore placement counts
+        // Restore placement trackers
         BasePlacementTracker.Instance.SetPlacedCount(data.BasePlaced);
         GoldMinePlacementTracker.Instance.SetPlacedCount(data.GoldMinePlaced);
 
-        // Manually mapped prefab references
+        // Build prefab map using only assigned prefabs
         _prefabMap = new Dictionary<string, GameObject>
         {
-            { "Base", BasePrefab },
-            { "GoldMine", GoldMinePrefab }
+            { BasePrefab.name,       BasePrefab       },
+            { GoldMinePrefab.name,   GoldMinePrefab   },
+            { MachineGunPrefab.name, MachineGunPrefab },
+
+            { CommonEnemyPrefab.name, CommonEnemyPrefab }
         };
 
+        if (BossEnemyPrefab != null)
+            _prefabMap[BossEnemyPrefab.name] = BossEnemyPrefab;
+
         // Restore towers
-        foreach (TowerSaveData towerData in data.Towers)
+        Debug.Log($"[UnpauseManager] Restoring {data.Towers.Count} towers");
+        foreach (var t in data.Towers)
         {
-            if (_prefabMap.TryGetValue(towerData.Type, out GameObject prefab))
+            Debug.Log($"[UnpauseManager] Tower type='{t.Type}' pos={t.Position} hp={t.Health} lvl={t.Level}");
+            if (_prefabMap.TryGetValue(t.Type, out var towerPf))
             {
-                GameObject tower = Instantiate(prefab, towerData.Position, Quaternion.identity);
-                Tower towerComp = tower.GetComponent<Tower>();
-                towerComp.SetHealth(towerData.Health);
-                towerComp.SetLevel(towerData.Level);
-                towerComp.SetInitialized(true);
+                var go = Instantiate(towerPf, t.Position, Quaternion.identity);
+                var comp = go.GetComponent<Tower>();
+                comp.SetLevel(t.Level);
+                comp.SetHealth(t.Health);
+                comp.SetInitialized(true);
             }
             else
             {
-                Debug.LogWarning("Missing prefab in UnpauseManager for tower type: " + towerData.Type);
+                Debug.LogWarning($"[UnpauseManager] No prefab found for tower type '{t.Type}'");
             }
         }
+
+        // Restore enemies
+        Debug.Log($"[UnpauseManager] Restoring {data.Enemies.Count} enemies");
+        foreach (var e in data.Enemies)
+        {
+            Debug.Log($"[UnpauseManager] Enemy type='{e.Type}' pos={e.Position} hp={e.Health}");
+            if (_prefabMap.TryGetValue(e.Type, out var enemyPf))
+            {
+                var go = Instantiate(enemyPf, e.Position, Quaternion.identity);
+                var comp = go.GetComponent<Entity>();
+                comp.SetHealth(e.Health);
+            }
+            else
+            {
+                Debug.LogWarning($"[UnpauseManager] No prefab found for enemy type '{e.Type}', skipping.");
+            }
+        }
+
+        // Restore wave state & start
+        var wm = WaveManager.Instance;
+        wm.BaseTransform = GameObject.FindWithTag("Base").transform;
+        wm.SetWaveState(
+            data.CurrentWave,
+            data.SpawnedInCurrentWave,
+            data.TimeUntilNextSpawn,
+            data.HealthMultiplier,
+            data.DamageMultiplier,
+            data.PostBossCycle
+        );
+        wm.StartWaves();
     }
 }

@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class GoldMinePlacementTracker : MonoBehaviour
+public class MachineGunPlacementTracker : MonoBehaviour
 {
-    public static GoldMinePlacementTracker Instance;
+    public static MachineGunPlacementTracker Instance;
 
     private int _placedCount = 0;
 
@@ -16,17 +16,14 @@ public class GoldMinePlacementTracker : MonoBehaviour
     {
         _placedCount++;
     }
-
     public void Decrement()
     {
         _placedCount--;
     }
-
     public void SetPlacedCount(int count)
     {
         _placedCount = count;
     }
-
     public int GetPlacedCount()
     {
         return _placedCount;

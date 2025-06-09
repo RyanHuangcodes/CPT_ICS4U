@@ -1,42 +1,94 @@
 using UnityEngine;
-using System.Collections.Generic;
-using System;
 
 public class Enemy : Entity
 {
-    private Transform _player;
-    // public GameObject coinPrefab;
+    public Transform BaseTransform;
+    public LayerMask ObstacleLayers;
+    public float AttackRange = 2f;
+    public float AttackCooldown = 0.75f;
+    public float MoveForce = 20f;
+    private Rigidbody2D _rb;
+    private Vector2 _moveDirection;
+    private float _lastAttackTime;
 
-    public Enemy() : base() {
-
-    }
-    
-    private void Start()
+    private void Awake()
     {
-        _player = GameObject.FindWithTag("Player")?.transform;
+        _rb = GetComponent<Rigidbody2D>();
     }
 
     private void Update()
     {
-        if (_player != null)
+        if (BaseTransform == null)
         {
-            // enemy moves towards player
-            Vector2 direction = (_player.position - transform.position).normalized;
-            transform.position += (Vector3)(direction * GetSpeed() * Time.deltaTime);
+            var baseObj = GameObject.FindGameObjectWithTag("Base");
+            if (baseObj != null)
+                BaseTransform = baseObj.transform;
+            else
+            {
+                _moveDirection = Vector2.zero;
+                return;
+            }
+        }
+
+        Transform target = AcquireTarget();
+        if (target == null)
+        {
+            _moveDirection = Vector2.zero;
+            return;
+        }
+
+        float distance = Vector2.Distance(transform.position, target.position);
+
+        if (distance <= AttackRange && Time.time >= _lastAttackTime + AttackCooldown)
+        {
+            Attack(target);
+            _lastAttackTime = Time.time;
+            _moveDirection = Vector2.zero;
+        }
+        else
+        {
+            _moveDirection = (target.position - transform.position).normalized;
         }
     }
 
-    // private void GiveCoinsToPlayer()
-    // {
-    //     if (CoinManager.Instance != null)
-    //         CoinManager.Instance.AddCoins(5); // Add 5 coins
-    // }
+    private void FixedUpdate()
+    {
+        if (_moveDirection != Vector2.zero)
+        {
+            _rb.AddForce(_moveDirection * MoveForce, ForceMode2D.Force);
+
+            float maxSpeed = GetSpeed();
+            if (_rb.linearVelocity.magnitude > maxSpeed)
+                _rb.linearVelocity = _rb.linearVelocity.normalized * maxSpeed;
+        }
+    }
+//gpt
+    private Transform AcquireTarget()
+    {
+        Vector2 dirToBase = (BaseTransform.position - transform.position).normalized;
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, dirToBase, Mathf.Infinity, ObstacleLayers);
+        return hit.collider != null ? hit.collider.transform : BaseTransform;
+    }
+//endgpt
+    private void Attack(Transform target)
+    {
+        var entity = target.GetComponent<Entity>();
+        if (entity != null)
+        {
+            entity.TakeDamage(GetDamage());
+            Debug.Log($"Hit for {GetDamage()}, target HP now {entity.GetHealth()}.");
+        }
+    }
+
+    public void ApplyKnockback(Vector2 direction, float force)
+    {
+        if (_rb != null && force > 0f)
+            _rb.AddForce(direction * force, ForceMode2D.Impulse);
+    }
 
     protected override void Die()
     {
-        // GiveCoinsToPlayer();
-
-        Debug.Log("died");
+        Debug.Log("Enemy died");
         base.Die();
     }
 }

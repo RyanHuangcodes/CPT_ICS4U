@@ -4,15 +4,15 @@ public class GoldMine : Tower
 {
     protected override void Start()
     {
-        SetHealth(100);
-        SetDamage(0);
-        SetSpeed(0f);
+        // SetHealth(100);
+        // SetDamage(0);
+        // SetSpeed(0f);
         SetInitialized(true);
 
         _timer = 0f;
     }
     [SerializeField] private float _goldInterval = 1f;
-    [SerializeField] private int _goldPerInterval = 5;      
+    [SerializeField] private int _goldPerInterval = 5;
 
     private float _timer;
 
@@ -25,5 +25,10 @@ public class GoldMine : Tower
             GoldManager.Instance.AddGold(_goldPerInterval);
             _timer = 0f;
         }
+    }  
+    protected override void Die()
+    {
+        GoldMinePlacementTracker.Instance?.Decrement();
+        base.Die();
     }
 }

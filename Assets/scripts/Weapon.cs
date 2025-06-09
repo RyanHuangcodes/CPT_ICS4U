@@ -21,12 +21,5 @@ public class Weapon
     {
         return _avgDamage;
     }
-    public void Use(GameObject target)
-    {
-        Entity entity = target.GetComponent<Entity>();
-        if (entity != null)
-        {
-            entity.TakeDamage(_damage);
-        }
-    }
+  
 }

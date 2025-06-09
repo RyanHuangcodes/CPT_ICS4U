@@ -7,16 +7,16 @@ public class Enemy : Entity
     public float AttackRange = 2f;
     public float AttackCooldown = 0.75f;
     public float MoveForce = 20f;
-    private Rigidbody2D _rb;
-    private Vector2 _moveDirection;
-    private float _lastAttackTime;
+    public Rigidbody2D _rb;
+    public Vector2 _moveDirection;
+    public float _lastAttackTime;
 
-    private void Awake()
+    public void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
     }
 
-    private void Update()
+    public virtual void Update()
     {
         if (BaseTransform == null)
         {
@@ -51,7 +51,7 @@ public class Enemy : Entity
         }
     }
 
-    private void FixedUpdate()
+    public void FixedUpdate()
     {
         if (_moveDirection != Vector2.zero)
         {
@@ -62,15 +62,15 @@ public class Enemy : Entity
                 _rb.linearVelocity = _rb.linearVelocity.normalized * maxSpeed;
         }
     }
-//gpt
-    private Transform AcquireTarget()
+    //gpt
+    protected virtual Transform AcquireTarget()
     {
         Vector2 dirToBase = (BaseTransform.position - transform.position).normalized;
         RaycastHit2D hit = Physics2D.Raycast(transform.position, dirToBase, Mathf.Infinity, ObstacleLayers);
         return hit.collider != null ? hit.collider.transform : BaseTransform;
     }
-//endgpt
-    private void Attack(Transform target)
+    //endgpt
+    protected virtual void Attack(Transform target)
     {
         var entity = target.GetComponent<Entity>();
         if (entity != null)

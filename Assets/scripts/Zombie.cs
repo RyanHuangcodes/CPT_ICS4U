@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using static UnityEngine.RuleTile.TilingRuleOutput;
+using UnityEngine.EventSystems;
 
 public class Zombie: Enemy
 {
@@ -10,11 +11,43 @@ public class Zombie: Enemy
     {
         
     }
+    public override void Update()
+    {
+        Tower[] towerArray = FindObjectsByType<Tower>(FindObjectsSortMode.None);
+        List<Tower> towerList = new List<Tower>(towerArray);
+
+        if (towerList.Count == 0)
+        {
+            _moveDirection = Vector2.zero;
+            return;
+        }
+
+        Tower closestTower = FindClosestTarget(towerList);
+        if (closestTower == null)
+        {
+            _moveDirection = Vector2.zero;
+            return;
+        }
+
+        float distance = Vector2.Distance(transform.position, closestTower.transform.position);
+
+        if (distance <= AttackRange && Time.time >= _lastAttackTime + AttackCooldown)
+        {
+            Attack(closestTower.transform);
+            _lastAttackTime = Time.time;
+            _moveDirection = Vector2.zero;
+        }
+        else
+        {
+            _moveDirection = (closestTower.transform.position - transform.position).normalized;
+        }
+    }
+
     public Zombie() : base()
     {
 
     }
-    public void AttackClosestTarget(List<Tower> towers)
+    public Tower FindClosestTarget(List<Tower> towers)
     {
         int _capacity = 1;
         (float, Tower)[] _targets = new (float, Tower)[_capacity];
@@ -30,11 +63,10 @@ public class Zombie: Enemy
             _targets[_count] = (dist, tower);
             _count++;
         }
-        if (_count == 0)
-        {
-            return;
-        }
+
         MergeSort(_targets, 0, _count - 1);
+        return _targets[0].Item2; // Return the closest tower
+
         //_targets[0].Item2.takeDamage(GetDamage());
 
         // Item2 means the Gameobject as targets are in form (float, GameObject)
@@ -105,8 +137,5 @@ public class Zombie: Enemy
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }

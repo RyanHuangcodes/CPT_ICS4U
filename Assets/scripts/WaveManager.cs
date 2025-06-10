@@ -56,7 +56,7 @@ public class WaveManager : MonoBehaviour
         if (AnnouncementText != null)
             AnnouncementText.gameObject.SetActive(false);
 
-        // seed first color
+        // set the first common-enemy color (PostBossColors[0]) 
         CycleCommonEnemyColor();
     }
 
@@ -105,19 +105,13 @@ public class WaveManager : MonoBehaviour
 
     private IEnumerator SpawnAllWaves()
     {
-        // Determine effective initial delay (loaded or default)
-        float initialDelay = (_timeUntilNextSpawn > 0f) 
-            ? _timeUntilNextSpawn 
-            : InitialDelay;
+        // schedule first warning
+        StartCoroutine(ShowWaveWarning(1, InitialDelay));
 
-        // schedule warning for upcoming wave #1
-        StartCoroutine(ShowWaveWarning(1, initialDelay));
-
-        // wait out initial delay
-        _timeUntilNextSpawn = initialDelay;
+        // initial delay
+        _timeUntilNextSpawn = InitialDelay;
         yield return new WaitForSeconds(_timeUntilNextSpawn);
 
-        // wave loop
         while (_currentWave < TotalWaves)
         {
             _currentWave++;
@@ -128,7 +122,7 @@ public class WaveManager : MonoBehaviour
                 SpawnBossWave(_currentWave);
                 OnBossWaveStarted?.Invoke(_currentWave);
 
-                // after boss wave, buff and recolor for next batch
+                // after boss, bump cycle and recolor for the next batch
                 _postBossCycle++;
                 _healthMul *= HealthMultiplierPerCycle;
                 _damageMul *= DamageMultiplierPerCycle;
@@ -142,12 +136,12 @@ public class WaveManager : MonoBehaviour
                 OnWaveStarted?.Invoke(_currentWave);
             }
 
-            // schedule warning for next wave
+            // schedule next warning if there is one
             int nextWave = _currentWave + 1;
             if (nextWave <= TotalWaves)
                 StartCoroutine(ShowWaveWarning(nextWave, WaveInterval));
 
-            // wait standard interval
+            // wait interval
             _timeUntilNextSpawn = WaveInterval;
             yield return new WaitForSeconds(_timeUntilNextSpawn);
         }
@@ -224,7 +218,7 @@ public class WaveManager : MonoBehaviour
 
     /// <summary>
     /// Applies PostBossColors[_postBossCycle] to the CommonEnemyPrefab.
-    /// Called at Awake() and after each boss wave.
+    /// Called once at Awake(), and again after each boss wave.
     /// </summary>
     private void CycleCommonEnemyColor()
     {
@@ -235,7 +229,7 @@ public class WaveManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Shows “Wave X in 10 seconds!” (or “Boss Wave X…”) before spawn.
+    /// Shows “Wave X in 10 seconds!” (or “Boss Wave X…”) centered for the final 10s before spawn.
     /// </summary>
     private IEnumerator ShowWaveWarning(int waveNumber, float delay)
     {

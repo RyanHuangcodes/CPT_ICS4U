@@ -3,13 +3,13 @@ using UnityEngine;
 public class MachineGunTower : Tower
 {
     [Header("Machine Gun Stats")]
-    public float FireRate = 8f;             
-    public float Range = 5f;                
-    public int   Damage = 2;                
-    public float KnockbackForce = 0.3f;     
+    public float FireRate = 8f;
+    public float Range = 5f;
+    public int Damage = 2;
+    public float KnockbackForce = 0.3f;
 
     [Header("Muzzle Flash")]
-    public GameObject MuzzleFlashPrefab;    
+    public GameObject MuzzleFlashPrefab;
     public float MuzzleFlashDuration = 0.2f;
 
     [Header("Muzzle Offset (Local)")]
@@ -25,10 +25,10 @@ public class MachineGunTower : Tower
     {
         base.Start();
         SetInitialized(true);
-        SetHealth(100);
-        SetMaxHealth(100);
-        SetDamage(Damage);
-        SetSpeed(0f);
+        // SetHealth(100);
+        // SetMaxHealth(100);
+        // SetDamage(Damage);
+        // SetSpeed(0f);
 
         _fireCooldown = 0f;
         _rangeSquared = Range * Range;
@@ -67,5 +67,11 @@ public class MachineGunTower : Tower
         target.ApplyKnockback(dir, KnockbackForce);
 
         _fireCooldown = 1f / FireRate;
+    }
+
+    protected override void Die()
+    {
+        MachineGunPlacementTracker.Instance?.Decrement();
+        base.Die();
     }
 }

@@ -103,12 +103,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _health: 200
   _maxHealth: 200
-  _damage: 2
+  _damage: 10
   _speed: 0
   _level: 1
   FireRate: 5
   Range: 10
-  Damage: 5
+  Damage: 3
   KnockbackForce: 3
   MuzzleFlashPrefab: {fileID: 3012253130021783592, guid: 13cd2f775b02f42f49ea250502da6b8d, type: 3}
   MuzzleFlashDuration: 0.05

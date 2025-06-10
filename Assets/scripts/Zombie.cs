@@ -18,28 +18,28 @@ public class Zombie: Enemy
 
         if (towerList.Count == 0)
         {
-            moveDirection = Vector2.zero;
+            _moveDirection = Vector2.zero;
             return;
         }
 
         Tower closestTower = FindClosestTarget(towerList);
         if (closestTower == null)
         {
-            moveDirection = Vector2.zero;
+            _moveDirection = Vector2.zero;
             return;
         }
 
         float distance = Vector2.Distance(transform.position, closestTower.transform.position);
 
-        if (distance <= AttackRange && Time.time >= lastAttackTime + AttackCooldown)
+        if (distance <= AttackRange && Time.time >= _lastAttackTime + AttackCooldown)
         {
             Attack(closestTower.transform);
-            lastAttackTime = Time.time;
-            moveDirection = Vector2.zero;
+            _lastAttackTime = Time.time;
+            _moveDirection = Vector2.zero;
         }
         else
         {
-            moveDirection = (closestTower.transform.position - transform.position).normalized;
+            _moveDirection = (closestTower.transform.position - transform.position).normalized;
         }
     }
 
@@ -50,24 +50,24 @@ public class Zombie: Enemy
     public Tower FindClosestTarget(List<Tower> towers)
     {
         int _capacity = 1;
-        (float, Tower)[] targets = new (float, Tower)[_capacity];
-        int count = 0;
+        (float, Tower)[] _targets = new (float, Tower)[_capacity];
+        int _count = 0;
 
         foreach (Tower tower in towers)
         {
-            if (count >= targets.Length)
+            if (_count >= _targets.Length)
             {
-                targets = AddArrayIndex(targets);
+                _targets = AddArrayIndex(_targets);
             }
             float dist = CalculateDistance(transform.position, tower.transform.position);
-            targets[count] = (dist, tower);
-            count++;
+            _targets[_count] = (dist, tower);
+            _count++;
         }
 
-        MergeSort(targets, 0, count - 1);
-        return targets[0].Item2; // Return the closest tower
+        MergeSort(_targets, 0, _count - 1);
+        return _targets[0].Item2; // Return the closest tower
 
-        //targets[0].Item2.takeDamage(GetDamage());
+        //_targets[0].Item2.takeDamage(GetDamage());
 
         // Item2 means the Gameobject as targets are in form (float, GameObject)
         // The list needs both float which is sorted for distance and the Gameobject to know which is which
@@ -77,63 +77,63 @@ public class Zombie: Enemy
         if (end <= start)
             return;
 
-        int mid = start + (end - start) / 2;
+        int _mid = start + (end - start) / 2;
 
-        MergeSort(targets, start, mid);
-        MergeSort(targets, mid + 1, end);
+        MergeSort(targets, start, _mid);
+        MergeSort(targets, _mid + 1, end);
 
-        (float, Tower)[] newArray = new (float, Tower)[end - start + 1];
-        int cursor = 0;
-        int left = start;
-        int right = mid + 1;
+        (float, Tower)[] _newArray = new (float, Tower)[end - start + 1];
+        int _cursor = 0;
+        int _left = start;
+        int _right = _mid + 1;
 
-        while (left < mid + 1 && right <= end)
+        while (_left < _mid + 1 && _right <= end)
         {
-            if (targets[left].Item1 < targets[right].Item1)
+            if (targets[_left].Item1 < targets[_right].Item1)
             {
-                newArray[cursor] = targets[left];
-                left += 1;
+                _newArray[_cursor] = targets[_left];
+                _left += 1;
             }
             else
             {
-                newArray[cursor] = targets[right];
-                right += 1;
+                _newArray[_cursor] = targets[_right];
+                _right += 1;
             }
-            cursor += 1;
+            _cursor += 1;
         }
 
-        while (left < mid + 1)
+        while (_left < _mid + 1)
         {
-            newArray[cursor] = targets[left];
-            left += 1;
-            cursor += 1;
+            _newArray[_cursor] = targets[_left];
+            _left += 1;
+            _cursor += 1;
         }
 
-        while (right <= end)
+        while (_right <= end)
         {
-            newArray[cursor] = targets[right];
-            right += 1;
-            cursor += 1;
+            _newArray[_cursor] = targets[_right];
+            _right += 1;
+            _cursor += 1;
         }
 
-        for (int i = 0; i < newArray.Length; i++)
+        for (int i = 0; i < _newArray.Length; i++)
         {
-            targets[start + i] = newArray[i];
+            targets[start + i] = _newArray[i];
         }
     }
     private float CalculateDistance(Vector3 posEnemy, Vector3 posTower)
     {
-        float distanceX = posEnemy.x - posTower.x;
-        float distanceY = posEnemy.y - posTower.y;
-        return Mathf.Sqrt(distanceX * distanceX + distanceY * distanceY);
+        float _distanceX = posEnemy.x - posTower.x;
+        float _distanceY = posEnemy.y - posTower.y;
+        return Mathf.Sqrt(_distanceX * _distanceX + _distanceY * _distanceY);
     }
     //AddArrayIndex() is gpt code 
     private (float, Tower)[] AddArrayIndex((float, Tower)[] original)
     {
-        int newSize = original.Length + 1;
-        var newArray = new (float, Tower)[newSize];
-        Array.Copy(original, newArray, original.Length);
-        return newArray;
+        int _newSize = original.Length + 1;
+        var _newArray = new (float, Tower)[_newSize];
+        Array.Copy(original, _newArray, original.Length);
+        return _newArray;
     }
 
     // Update is called once per frame

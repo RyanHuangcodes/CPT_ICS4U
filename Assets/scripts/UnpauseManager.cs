@@ -34,14 +34,15 @@ public class UnpauseManager : MonoBehaviour
 
         // Restore player & gold
         var player = GameObject.FindWithTag("Player");
-        if (player != null) player.transform.position = data.PlayerPosition;
+        if (player != null)
+            player.transform.position = data.PlayerPosition;
         GoldManager.Instance.SetGold(data.Gold);
 
         // Restore placement trackers
         BasePlacementTracker.Instance.SetPlacedCount(data.BasePlaced);
         GoldMinePlacementTracker.Instance.SetPlacedCount(data.GoldMinePlaced);
 
-        // Build prefab map
+        // Prefab lookup
         _prefabMap = new Dictionary<string, GameObject>
         {
             { BasePrefab.name,       BasePrefab       },
@@ -59,14 +60,10 @@ public class UnpauseManager : MonoBehaviour
             {
                 var go = Instantiate(pf, t.Position, Quaternion.identity);
                 var comp = go.GetComponent<Tower>();
-                comp.SetMaxHealth(t.MaxHealth);    // NEW
+                comp.SetMaxHealth(t.MaxHealth);
                 comp.SetHealth(t.Health);
                 comp.SetLevel(t.Level);
                 comp.SetInitialized(true);
-            }
-            else
-            {
-                Debug.LogWarning($"[UnpauseManager] No prefab for tower '{t.Type}'");
             }
         }
 
@@ -79,13 +76,9 @@ public class UnpauseManager : MonoBehaviour
                 var comp = go.GetComponent<Entity>();
                 comp.SetHealth(e.Health);
             }
-            else
-            {
-                Debug.LogWarning($"[UnpauseManager] No prefab for enemy '{e.Type}'");
-            }
         }
 
-        // Restore wave state & start
+        // Restore wave state
         var wm = WaveManager.Instance;
         wm.BaseTransform = GameObject.FindWithTag("Base").transform;
         wm.SetWaveState(
@@ -97,11 +90,12 @@ public class UnpauseManager : MonoBehaviour
             data.PostBossCycle
         );
 
-        // Restore knife tier & refresh shop UI
+        // Restore knife tier
         if (KnifeThrower.Instance != null)
             KnifeThrower.Instance.SetUpgradeTier(data.KnifeTier);
-        if (ShopManager.Instance != null)
-            ShopManager.Instance.RefreshUI();
+
+        // **Notify UI of current wave immediately**
+        wm.OnWaveStarted?.Invoke(data.CurrentWave);
 
         wm.StartWaves();
     }

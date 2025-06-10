@@ -8,7 +8,6 @@ public class Knife : MonoBehaviour
 
     private void Awake()
     {
-        // Make this a trigger-based, kinematic projectile so no physics knockback occurs
         var rb = GetComponent<Rigidbody2D>();
         rb.bodyType = RigidbodyType2D.Kinematic;
 

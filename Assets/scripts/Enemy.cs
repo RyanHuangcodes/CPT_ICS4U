@@ -7,13 +7,13 @@ public class Enemy : Entity
     public float AttackRange = 2f;
     public float AttackCooldown = 0.75f;
     public float MoveForce = 20f;
-    public Rigidbody2D _rb;
-    public Vector2 _moveDirection;
-    public float _lastAttackTime;
+    public Rigidbody2D rb;
+    public Vector2 moveDirection;
+    public float lastAttackTime;
 
     public void Awake()
     {
-        _rb = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     public virtual void Update()
@@ -25,7 +25,7 @@ public class Enemy : Entity
                 BaseTransform = baseObj.transform;
             else
             {
-                _moveDirection = Vector2.zero;
+                moveDirection = Vector2.zero;
                 return;
             }
         }
@@ -33,33 +33,33 @@ public class Enemy : Entity
         Transform target = AcquireTarget();
         if (target == null)
         {
-            _moveDirection = Vector2.zero;
+            moveDirection = Vector2.zero;
             return;
         }
 
         float distance = Vector2.Distance(transform.position, target.position);
 
-        if (distance <= AttackRange && Time.time >= _lastAttackTime + AttackCooldown)
+        if (distance <= AttackRange && Time.time >= lastAttackTime + AttackCooldown)
         {
             Attack(target);
-            _lastAttackTime = Time.time;
-            _moveDirection = Vector2.zero;
+            lastAttackTime = Time.time;
+            moveDirection = Vector2.zero;
         }
         else
         {
-            _moveDirection = (target.position - transform.position).normalized;
+            moveDirection = (target.position - transform.position).normalized;
         }
     }
 
     public void FixedUpdate()
     {
-        if (_moveDirection != Vector2.zero)
+        if (moveDirection != Vector2.zero)
         {
-            _rb.AddForce(_moveDirection * MoveForce, ForceMode2D.Force);
+            rb.AddForce(moveDirection * MoveForce, ForceMode2D.Force);
 
             float maxSpeed = GetSpeed();
-            if (_rb.linearVelocity.magnitude > maxSpeed)
-                _rb.linearVelocity = _rb.linearVelocity.normalized * maxSpeed;
+            if (rb.linearVelocity.magnitude > maxSpeed)
+                rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
         }
     }
     //gpt
@@ -82,8 +82,8 @@ public class Enemy : Entity
 
     public void ApplyKnockback(Vector2 direction, float force)
     {
-        if (_rb != null && force > 0f)
-            _rb.AddForce(direction * force, ForceMode2D.Impulse);
+        if (rb != null && force > 0f)
+            rb.AddForce(direction * force, ForceMode2D.Impulse);
     }
 
     protected override void Die()

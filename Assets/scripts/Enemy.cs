@@ -11,9 +11,19 @@ public class Enemy : Entity
     public Vector2 moveDirection;
     public float lastAttackTime;
 
+    private Animator _anim;
+    private SpriteRenderer _sprite;
+    private Vector2 _lastPosition;
+
+    private bool _isAttacking = false;
+
     public void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
+        _rb = GetComponent<Rigidbody2D>();
+        _anim = GetComponent<Animator>();
+        _sprite = GetComponent<SpriteRenderer>();
+        _lastPosition = transform.position;
+
     }
 
     public virtual void Update()
@@ -25,7 +35,8 @@ public class Enemy : Entity
                 BaseTransform = baseObj.transform;
             else
             {
-                moveDirection = Vector2.zero;
+                _moveDirection = Vector2.zero;
+                SetAnimation(false);
                 return;
             }
         }
@@ -33,7 +44,8 @@ public class Enemy : Entity
         Transform target = AcquireTarget();
         if (target == null)
         {
-            moveDirection = Vector2.zero;
+            _moveDirection = Vector2.zero;
+            SetAnimation(false);
             return;
         }
 
@@ -41,19 +53,33 @@ public class Enemy : Entity
 
         if (distance <= AttackRange && Time.time >= lastAttackTime + AttackCooldown)
         {
+            // Stop moving during attack
+            _moveDirection = Vector2.zero;
+            _rb.linearVelocity = Vector2.zero;
+            _isAttacking = true;
+
+            SetAnimation(false);
+            FaceTarget(target.position);
             Attack(target);
-            lastAttackTime = Time.time;
-            moveDirection = Vector2.zero;
+
+            _lastAttackTime = Time.time;
         }
         else
         {
-            moveDirection = (target.position - transform.position).normalized;
+            _moveDirection = (target.position - transform.position).normalized;
+            _isAttacking = false;
+
+            SetAnimation(true);
+            FaceTarget(target.position);
         }
+
+        _lastPosition = transform.position;
     }
 
     public void FixedUpdate()
     {
-        if (moveDirection != Vector2.zero)
+
+        if (!_isAttacking && _moveDirection != Vector2.zero)
         {
             rb.AddForce(moveDirection * MoveForce, ForceMode2D.Force);
 
@@ -62,14 +88,14 @@ public class Enemy : Entity
                 rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
         }
     }
-    //gpt
+
     protected virtual Transform AcquireTarget()
     {
         Vector2 dirToBase = (BaseTransform.position - transform.position).normalized;
         RaycastHit2D hit = Physics2D.Raycast(transform.position, dirToBase, Mathf.Infinity, ObstacleLayers);
         return hit.collider != null ? hit.collider.transform : BaseTransform;
     }
-    //endgpt
+
     protected virtual void Attack(Transform target)
     {
         var entity = target.GetComponent<Entity>();
@@ -90,5 +116,19 @@ public class Enemy : Entity
     {
         Debug.Log("Enemy died");
         base.Die();
+    }
+
+    private void SetAnimation(bool isMoving)
+    {
+        if (_anim != null)
+            _anim.SetBool("isMoving", isMoving);
+    }
+
+    private void FaceTarget(Vector3 targetPos)
+    {
+        Vector2 direction = targetPos - transform.position;
+
+        if (_sprite != null)
+            _sprite.flipX = direction.x < 0;
     }
 }

@@ -21,7 +21,7 @@ public class GoldManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        //end gpt
+        //endgpt
     }
 
     private void Start()
@@ -29,7 +29,7 @@ public class GoldManager : MonoBehaviour
         UpdateUI();
     }
 
-    void Update()
+    private void Update()
     {
         UpdateUI();
     }
@@ -38,6 +38,7 @@ public class GoldManager : MonoBehaviour
     {
         return _totalGold;
     }
+
     public void AddGold(int amount)
     {
         _totalGold += amount;
@@ -66,10 +67,5 @@ public class GoldManager : MonoBehaviour
         {
             _goldText = GameObject.FindWithTag("GoldText")?.GetComponent<TMP_Text>();
         }
-    }
-
-    public int GetCoins()
-    {
-        return _totalGold;
     }
 }

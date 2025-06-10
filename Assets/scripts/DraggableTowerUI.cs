@@ -58,8 +58,20 @@ public class DraggableTowerUI : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         _previewRenderer = _preview.GetComponent<SpriteRenderer>();
         _previewRenderer.color = _invalidColor;
         _preview.GetComponent<Collider2D>().enabled = false;
-    }
 
+        // --- DISABLE SHOOTING on preview ---
+        var shooters = _preview.GetComponentsInChildren<MachineGunTower>();
+        foreach (var s in shooters)
+        {
+            s.enabled = false;
+        }
+
+        var other = _preview.GetComponentsInChildren<Tower>();
+        foreach (var t in other)
+        {
+            t.enabled = false;
+        }
+    }
     public void OnDrag(PointerEventData eventData)
     {
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);

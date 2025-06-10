@@ -7,20 +7,18 @@ public class SaveData
 {
     public Vector2 PlayerPosition;
     public int Gold;
-
     public List<TowerSaveData> Towers;
     public List<EnemySaveData> Enemies;
-
     public int BasePlaced;
     public int GoldMinePlaced;
 
-
     public int CurrentWave;
-    public int SpawnedInCurrentWave;     
-    public float TimeUntilNextSpawn;     
+    public int SpawnedInCurrentWave;
+    public float TimeUntilNextSpawn;
     public float HealthMultiplier;
     public float DamageMultiplier;
     public int PostBossCycle;
+    public int KnifeTier;
 
     public SaveData(
         Vector2 playerPos,
@@ -34,21 +32,22 @@ public class SaveData
         float timeUntilNextSpawn,
         float healthMul,
         float damageMul,
-        int postBossCycle
+        int postBossCycle,
+        int knifeTier
     ) {
-        PlayerPosition = playerPos;
-        Gold = gold;
-        Towers = towers;
-        Enemies = enemies;
-        BasePlaced = baseCount;
-        GoldMinePlaced = mineCount;
-
-        CurrentWave = currentWave;
-        SpawnedInCurrentWave = spawnedInWave;
-        TimeUntilNextSpawn = timeUntilNextSpawn;
-        HealthMultiplier = healthMul;
-        DamageMultiplier = damageMul;
-        PostBossCycle = postBossCycle;
+        PlayerPosition         = playerPos;
+        Gold                   = gold;
+        Towers                 = towers;
+        Enemies                = enemies;
+        BasePlaced             = baseCount;
+        GoldMinePlaced         = mineCount;
+        CurrentWave            = currentWave;
+        SpawnedInCurrentWave   = spawnedInWave;
+        TimeUntilNextSpawn     = timeUntilNextSpawn;
+        HealthMultiplier       = healthMul;
+        DamageMultiplier       = damageMul;
+        PostBossCycle          = postBossCycle;
+        KnifeTier              = knifeTier;   
     }
 }
 
@@ -57,14 +56,17 @@ public class TowerSaveData
 {
     public string Type;
     public Vector2 Position;
-    public int Health;
+    public int Health;     
+    public int MaxHealth;  
     public int Level;
 
-    public TowerSaveData(string type, Vector2 pos, int health, int level) {
-        Type = type;
-        Position = pos;
-        Health = health;
-        Level = level;
+    public TowerSaveData(string type, Vector2 pos, int health, int maxHealth, int level)
+    {
+        Type      = type;
+        Position  = pos;
+        Health    = health;
+        MaxHealth = maxHealth;
+        Level     = level;
     }
 }
 
@@ -75,9 +77,10 @@ public class EnemySaveData
     public Vector2 Position;
     public int Health;
 
-    public EnemySaveData(string type, Vector2 pos, int health) {
-        Type = type;
+    public EnemySaveData(string type, Vector2 pos, int health)
+    {
+        Type     = type;
         Position = pos;
-        Health = health;
+        Health   = health;
     }
 }

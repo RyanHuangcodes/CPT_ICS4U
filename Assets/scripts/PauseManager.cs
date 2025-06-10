@@ -4,20 +4,11 @@ using System.Collections.Generic;
 
 public class PauseManager : MonoBehaviour
 {
-    /// <summary>
-    /// Call this when the player hits “Pause.” It gathers
-    /// player, gold, towers, enemies, wave state—and writes
-    /// it all out via SaveManager.
-    /// </summary>
     public void GoToPaused()
     {
         // 1) Player
         var player = GameObject.FindWithTag("Player");
-        if (player == null)
-        {
-            Debug.LogError("[PauseManager] No Player found!");
-            return;
-        }
+        if (player == null) { Debug.LogError("[PauseManager] No Player!"); return; }
 
         // 2) Gold
         int gold = GoldManager.Instance.GetGold();
@@ -28,7 +19,6 @@ public class PauseManager : MonoBehaviour
             FindObjectsInactive.Exclude,
             FindObjectsSortMode.None
         );
-        Debug.Log($"[PauseManager] Found {towers.Length} towers");
         foreach (var tower in towers)
         {
             string type = tower.name.Replace("(Clone)", "").Trim();
@@ -36,6 +26,7 @@ public class PauseManager : MonoBehaviour
                 type,
                 tower.transform.position,
                 tower.GetHealth(),
+                tower.GetMaxHealth(),     // NEW
                 tower.GetLevel()
             ));
         }
@@ -46,7 +37,6 @@ public class PauseManager : MonoBehaviour
             FindObjectsInactive.Exclude,
             FindObjectsSortMode.None
         );
-        Debug.Log($"[PauseManager] Found {enemies.Length} enemies");
         foreach (var enemy in enemies)
         {
             string type = enemy.name.Replace("(Clone)", "").Trim();
@@ -66,7 +56,10 @@ public class PauseManager : MonoBehaviour
         float damageMul          = wm.CurrentDamageMultiplier;
         int   postBossCycle      = wm.PostBossCycle;
 
-        // 6) Build SaveData
+        // 6) Knife tier
+        int knifeTier = KnifeThrower.Instance.CurrentUpgradeTier;
+
+        // 7) Build SaveData
         var data = new SaveData(
             player.transform.position,
             gold,
@@ -79,10 +72,11 @@ public class PauseManager : MonoBehaviour
             timeUntilNextSpawn,
             healthMul,
             damageMul,
-            postBossCycle
+            postBossCycle,
+            knifeTier            // <-- new
         );
 
-        // 7) Write & switch
+        // 8) Write & switch
         SaveManager.SaveGame(data);
         SceneManager.LoadScene("PauseScene");
     }

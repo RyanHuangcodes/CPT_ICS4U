@@ -15,6 +15,8 @@ public class Enemy : Entity
     private SpriteRenderer _sprite;
     private Vector2 _lastPosition;
 
+    private bool _isAttacking = false;
+
     public void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -50,22 +52,23 @@ public class Enemy : Entity
 
         if (distance <= AttackRange && Time.time >= _lastAttackTime + AttackCooldown)
         {
+            // Stop moving during attack
+            _moveDirection = Vector2.zero;
+            _rb.linearVelocity = Vector2.zero;
+            _isAttacking = true;
+
+            SetAnimation(false);
+            FaceTarget(target.position);
             Attack(target);
             _lastAttackTime = Time.time;
-            _moveDirection = Vector2.zero;
-            SetAnimation(false);
         }
         else
         {
             _moveDirection = (target.position - transform.position).normalized;
-            SetAnimation(true);
-        }
+            _isAttacking = false;
 
-        // Detect direction change and flip sprite
-        float deltaX = transform.position.x - _lastPosition.x;
-        if (Mathf.Abs(deltaX) > 0.01f)
-        {
-            _sprite.flipX = deltaX < 0;
+            SetAnimation(true);
+            FaceTarget(target.position);
         }
 
         _lastPosition = transform.position;
@@ -73,7 +76,7 @@ public class Enemy : Entity
 
     public void FixedUpdate()
     {
-        if (_moveDirection != Vector2.zero)
+        if (!_isAttacking && _moveDirection != Vector2.zero)
         {
             _rb.AddForce(_moveDirection * MoveForce, ForceMode2D.Force);
 
@@ -116,5 +119,13 @@ public class Enemy : Entity
     {
         if (_anim != null)
             _anim.SetBool("isMoving", isMoving);
+    }
+
+    private void FaceTarget(Vector3 targetPos)
+    {
+        Vector2 direction = targetPos - transform.position;
+
+        if (_sprite != null)
+            _sprite.flipX = direction.x < 0;
     }
 }

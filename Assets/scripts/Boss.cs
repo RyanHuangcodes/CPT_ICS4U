@@ -4,13 +4,13 @@ using UnityEngine;
 using static UnityEngine.RuleTile.TilingRuleOutput;
 using UnityEngine.EventSystems;
 
-public class Zombie: Enemy
+public class Boss: Enemy
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
+    //void Start()
+    //{
         
-    }
+    //}
     public override void Update()
     {
         Tower[] towerArray = FindObjectsByType<Tower>(FindObjectsSortMode.None);
@@ -43,10 +43,10 @@ public class Zombie: Enemy
         }
     }
 
-    public Zombie() : base()
-    {
+    //public Zombie() : base()
+    //{
 
-    }
+    //}
     public Tower FindClosestTarget(List<Tower> towers)
     {
         int _capacity = 1;

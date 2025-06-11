@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: f7a8e870d1a82d34abeebfd9d0d23984
+guid: e24c95a75d3773e41ae0eaab5518d306
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3149979162660145222
-    second: Zombie-Game-6-11-2025_0
+      213: 4972708265207238506
+    second: tilesheet_basic_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -75,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -113,23 +113,45 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Zombie-Game-6-11-2025_0
+      name: tilesheet_basic_0
       rect:
         serializedVersion: 2
-        x: 44
-        y: 44
-        width: 936
-        height: 453
+        x: 0
+        y: 0
+        width: 512
+        height: 320
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ab772cf04a60944d0800000000000000
-      internalID: -3149979162660145222
+      spriteID: a6f835712db920540800000000000000
+      internalID: 4972708265207238506
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tilesheet_basic_1
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 107
+        width: 87
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d6a46e68d3d08bf438a7f2b58f971f50
+      internalID: 865274243
       vertices: []
       indices: 
       edges: []
@@ -138,7 +160,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 8dae47b4d3d94c14ab693cf85b410d6e
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +170,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Zombie-Game-6-11-2025_0: -3149979162660145222
+      tilesheet_basic_1: 865274243
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,10 +1,13 @@
 fileFormatVersion: 2
-guid: f7a8e870d1a82d34abeebfd9d0d23984
+guid: 8cafb16cc94948b4b8a5ad60b9afd007
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3149979162660145222
-    second: Zombie-Game-6-11-2025_0
+      213: 2436854410043848608
+    second: Game-paused-6-11-2025(1)_0
+  - first:
+      213: 2763490182123981295
+    second: Game-paused-6-11-2025(1)_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +40,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -46,7 +49,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -75,7 +78,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -113,13 +116,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Zombie-Game-6-11-2025_0
+      name: Game-paused-6-11-2025(1)_0
       rect:
         serializedVersion: 2
-        x: 44
+        x: 45
         y: 44
-        width: 936
-        height: 453
+        width: 343
+        height: 111
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +131,30 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ab772cf04a60944d0800000000000000
-      internalID: -3149979162660145222
+      spriteID: 0a7f108cc2271d120800000000000000
+      internalID: 2436854410043848608
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Game-paused-6-11-2025(1)_1
+      rect:
+        serializedVersion: 2
+        x: 464
+        y: 44
+        width: 516
+        height: 111
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe987c5dda3e95620800000000000000
+      internalID: 2763490182123981295
       vertices: []
       indices: 
       edges: []
@@ -138,7 +163,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +173,8 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Zombie-Game-6-11-2025_0: -3149979162660145222
+      Game-paused-6-11-2025(1)_0: 2436854410043848608
+      Game-paused-6-11-2025(1)_1: 2763490182123981295
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

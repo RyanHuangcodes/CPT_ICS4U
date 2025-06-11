@@ -141,9 +141,9 @@ MonoBehaviour:
   AttackRange: 2
   AttackCooldown: 1
   MoveForce: 10
-  _rb: {fileID: 0}
-  _moveDirection: {x: 0, y: 0}
-  _lastAttackTime: 0
+  Rb: {fileID: 0}
+  MoveDirection: {x: 0, y: 0}
+  LastAttackTime: 0
 --- !u!95 &7479298624300796215
 Animator:
   serializedVersion: 7

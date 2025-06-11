@@ -2,24 +2,32 @@ using UnityEngine;
 
 public class Tower : Entity
 {
-    // tracks if tower has been placed
     private bool _isInitialized = false;
-    [SerializeField] private int _level = 1;
+
+    [SerializeField]
+    private int _level = 1;
+
+    [Header("Health Bar Setup")]
+    [Tooltip("Drag the HealthBar GameObject here (child of this tower)")]
+    [SerializeField]
+    private GameObject _healthBarRoot;
+
+    [Tooltip("Drag the Fill child Transform here")]
+    [SerializeField]
+    private Transform _fillTransform;
+
+    private float _regenAccumulator;
+    private float _initialFillScaleX;
+    private Vector3 _initialFillLocalPos;
 
     public bool IsInitialized()
     {
         return _isInitialized;
     }
 
-    // set initialization status
     public void SetInitialized(bool state)
     {
         _isInitialized = state;
-    }
-
-    protected virtual void Start()
-    {
-
     }
 
     public int GetLevel()
@@ -29,6 +37,63 @@ public class Tower : Entity
 
     public void SetLevel(int level)
     {
-        _level = level; 
+        _level = level;
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+    }
+
+    public override void TakeDamage(int damage)
+    {
+        base.TakeDamage(damage);
+        RefreshHealthBar();
+    }
+
+    protected virtual void Update()
+    {
+        int current = GetHealth();
+        int max     = GetMaxHealth();
+
+        if (current < max)
+        {
+            _regenAccumulator += max * 0.02f * Time.deltaTime;
+            int healAmount = Mathf.FloorToInt(_regenAccumulator);
+            if (healAmount > 0)
+            {
+                Heal(healAmount);
+                _regenAccumulator -= healAmount;
+                RefreshHealthBar();
+            }
+        }
+    }
+
+    private void RefreshHealthBar()
+    {
+        if (_healthBarRoot == null || _fillTransform == null)
+        {
+            return;
+        }
+
+        float pct = (float)GetHealth() / GetMaxHealth();
+
+        if (pct < 1f)
+        {
+            _healthBarRoot.SetActive(true);
+            Vector3 scale = _fillTransform.localScale;
+            scale.x = pct;
+            _fillTransform.localScale = scale;
+            float halfFull = _initialFillScaleX * 0.5f;
+            float halfNow  = scale.x * 0.5f;
+            Vector3 pos    = _initialFillLocalPos;
+            pos.x = halfNow-halfFull-0.5f;
+            _fillTransform.localPosition = pos;
+        }
+        else
+        {
+            _healthBarRoot.SetActive(false);
+            _regenAccumulator = 0f;
+        }
     }
 }

@@ -23,7 +23,7 @@ public class MachineGunTower : Tower
 
     protected override void Start()
     {
-        base.Start();
+        // base.Start();
         SetInitialized(true);
         // SetHealth(100);
         // SetMaxHealth(100);
@@ -34,8 +34,9 @@ public class MachineGunTower : Tower
         _rangeSquared = Range * Range;
     }
 
-    private void Update()
+    protected override void Update()
     {
+        base.Update();
         _fireCooldown -= Time.deltaTime;
         if (_fireCooldown > 0f) return;
 

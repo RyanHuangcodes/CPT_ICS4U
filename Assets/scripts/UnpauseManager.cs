@@ -1,3 +1,4 @@
+// UnpauseManager.cs
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ public class UnpauseManager : MonoBehaviour
             return;
         }
 
-        // Restore player & gold
+        // Restore player position and gold
         var player = GameObject.FindWithTag("Player");
         if (player != null)
             player.transform.position = data.PlayerPosition;
@@ -42,7 +43,7 @@ public class UnpauseManager : MonoBehaviour
         BasePlacementTracker.Instance.SetPlacedCount(data.BasePlaced);
         GoldMinePlacementTracker.Instance.SetPlacedCount(data.GoldMinePlaced);
 
-        // Prefab lookup
+        // Build prefab lookup
         _prefabMap = new Dictionary<string, GameObject>
         {
             { BasePrefab.name,       BasePrefab       },
@@ -65,6 +66,7 @@ public class UnpauseManager : MonoBehaviour
                 comp.SetLevel(t.Level);
                 comp.SetInitialized(true);
             }
+            else Debug.LogWarning($"No prefab for tower '{t.Type}'");
         }
 
         // Restore enemies
@@ -76,6 +78,7 @@ public class UnpauseManager : MonoBehaviour
                 var comp = go.GetComponent<Entity>();
                 comp.SetHealth(e.Health);
             }
+            else Debug.LogWarning($"No prefab for enemy '{e.Type}'");
         }
 
         // Restore wave state
@@ -90,12 +93,11 @@ public class UnpauseManager : MonoBehaviour
             data.PostBossCycle
         );
 
-        // Restore knife tier
+        // Restore knife tier and refresh shop UI
         if (KnifeThrower.Instance != null)
             KnifeThrower.Instance.SetUpgradeTier(data.KnifeTier);
-
-        // **Notify UI of current wave immediately**
-        wm.OnWaveStarted?.Invoke(data.CurrentWave);
+        if (ShopManager.Instance != null)
+            ShopManager.Instance.RefreshUI();
 
         wm.StartWaves();
     }

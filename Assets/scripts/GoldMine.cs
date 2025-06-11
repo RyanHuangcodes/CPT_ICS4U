@@ -4,6 +4,7 @@ public class GoldMine : Tower
 {
     protected override void Start()
     {
+        // base.Start();
         // SetHealth(100);
         // SetDamage(0);
         // SetSpeed(0f);
@@ -16,8 +17,9 @@ public class GoldMine : Tower
 
     private float _timer;
 
-    private void Update()
+    protected override void Update()
     {
+        base.Update();
         _timer += Time.deltaTime;
 
         if (_timer >= _goldInterval)

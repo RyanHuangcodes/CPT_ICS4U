@@ -11,6 +11,10 @@ public class Entity : MonoBehaviour
     {
     }
 
+    protected virtual void Start()
+    {
+    }
+
     public int GetHealth()
     {
         return _health;
@@ -31,7 +35,7 @@ public class Entity : MonoBehaviour
         _maxHealth = maxHealth;
     }
 
-    public void TakeDamage(int damage)
+    public virtual void TakeDamage(int damage)
     {
         _health -= damage;
         if (_health <= 0)

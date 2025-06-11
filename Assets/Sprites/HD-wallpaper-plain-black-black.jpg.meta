@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 649109faf4af3f541a6876a978ca2f67
+guid: eb9b2c52fe63f0446b0fd1f4c3258604
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1180769696813155749
-    second: 1d33b3a3692943efa759c18f8532518djY0dP2y6gF8dYqE7-28_0
+      213: 9075026935444206600
+    second: HD-wallpaper-plain-black-black_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -75,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 2
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -113,7 +113,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 1d33b3a3692943efa759c18f8532518djY0dP2y6gF8dYqE7-28_0
+      name: HD-wallpaper-plain-black-black_0
       rect:
         serializedVersion: 2
         x: 0
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5a5081488cfe26010800000000000000
-      internalID: 1180769696813155749
+      spriteID: 804f04e8ae8f0fd70800000000000000
+      internalID: 9075026935444206600
       vertices: []
       indices: 
       edges: []
@@ -147,8 +147,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      1d33b3a3692943efa759c18f8532518djY0dP2y6gF8dYqE7-28_0: 1180769696813155749
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

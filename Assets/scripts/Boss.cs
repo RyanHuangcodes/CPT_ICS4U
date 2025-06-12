@@ -2,86 +2,101 @@ using UnityEngine;
 
 public class Boss : Enemy
 {
-    //override enemy
-    [SerializeField] private float _bossAttackRange    = 3f;
-    [SerializeField] private float _bossAttackCooldown = 1.5f;
+
+    private float _bossAttackRange    = 3f;
+    private float _bossAttackCooldown = 1.5f;
 
     protected override void Start()
     {
         AttackRange = _bossAttackRange;
         AttackCooldown = _bossAttackCooldown;
     }
+    // Accessor methods or getters for accessing private attributes
+    public float GetBossAttackRange()
+    {
+        return _bossAttackRange;
+    }
 
+    public float GetBossAttackCooldown()
+    {
+        return _bossAttackCooldown;
+    }
     protected override Transform AcquireTarget()
     {
-        Tower[] all = Object.FindObjectsByType<Tower>(
-            FindObjectsInactive.Exclude,
-            FindObjectsSortMode.None
-        );
-        if (all.Length == 0)
+        Tower[] all = Object.FindObjectsByType<Tower>(FindObjectsInactive.Exclude,FindObjectsSortMode.None); //gpt line to get array of all towers in the scene
+        if (all.Length == 0) // if there are no twoers
         {
             return base.AcquireTarget();
         }
 
-        Vector2 origin = transform.position;
-        Tower[] tmp = new Tower[all.Length];
-        MergeSort(all, tmp, origin, 0, all.Length - 1);
+        Vector2 origin = transform.position; // boss position
+        Tower[] tmp = new Tower[all.Length]; //temporary array  for sorting
+        MergeSort(all, tmp, origin, 0, all.Length - 1); // sort array
         return all[0].transform;
     }
 
-    private void MergeSort(Tower[] arr, Tower[] tmp, Vector2 origin, int left, int right)
+    private void MergeSort(Tower[] towers, Tower[] temp, Vector2 origin, int start, int end)
     {
-        if (left >= right)
+        // base case
+        if (end <= start)
         {
             return;
         }
 
-        int mid = left + (right - left) / 2;
-        MergeSort(arr, tmp, origin, left, mid);
-        MergeSort(arr, tmp, origin, mid + 1, right);
+        int mid = start + (end - start) / 2;
 
-        int i = left;
-        int j = mid + 1;
-        int k = left;
+        MergeSort(towers, temp, origin, start, mid);
+        MergeSort(towers, temp, origin, mid + 1, end);
 
-        while (i <= mid && j <= right)
+        int cursor = start;
+        int left = start;
+        int right = mid + 1;
+
+        while (left < mid + 1 && right <= end)
         {
-            float di = ((Vector2)arr[i].transform.position - origin).sqrMagnitude;
-            float dj = ((Vector2)arr[j].transform.position - origin).sqrMagnitude;
-            if (di <= dj)
+            // calculate squared distance from origin to each tower
+            float distanceLeft = ((Vector2)towers[left].transform.position - origin).sqrMagnitude; // finds distance from origin to left tower
+            float distanceRight = ((Vector2)towers[right].transform.position - origin).sqrMagnitude;// distance to right tower
+
+            if (distanceLeft <= distanceRight)
             {
-                tmp[k] = arr[i];
-                i++;
+                temp[cursor] = towers[left];
+                left++;
             }
             else
             {
-                tmp[k] = arr[j];
-                j++;
+                temp[cursor] = towers[right];
+                right++;
             }
-            k++;
+            cursor++;
         }
 
-        while (i <= mid)
+        // if left side has leftover add remaining, otherwise it will check right
+        while (left <= mid)
         {
-            tmp[k] = arr[i];
-            i++;
-            k++;
+            temp[cursor] = towers[left];
+            left++;
+            cursor++;
         }
 
-        while (j <= right)
+        //if right side has leftover add the rest
+        while (right <= end)
         {
-            tmp[k] = arr[j];
-            j++;
-            k++;
+            temp[cursor] = towers[right];
+            right++;
+            cursor++;
         }
 
-        for (int t = left; t <= right; t++)
+        // shove temp array back into towers
+        for (int i = start; i <= end; i++)
         {
-            arr[t] = tmp[t];
+            towers[i] = temp[i];
         }
     }
 
-    public override void ApplyKnockback(Vector2 direction, float force)
+
+
+    public override void ApplyKnockback(Vector2 distanceIrection, float force)
     {
     }
 }

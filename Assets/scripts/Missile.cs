@@ -26,7 +26,7 @@ public class Missile : MonoBehaviour
     /// </summary>
     public void Setup(Vector2 direction)
     {
-        _rb.velocity = direction.normalized * Speed;
+        _rb.linearVelocity = direction.normalized * Speed;
         Destroy(gameObject, 5f);
     }
 

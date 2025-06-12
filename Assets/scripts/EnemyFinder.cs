@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public static class EnemyFinder
@@ -6,7 +7,10 @@ public static class EnemyFinder
     public static Enemy FindClosestEnemyInRange(Vector2 origin, float range)
     {
         float rangeSquared = range * range;
-        Enemy[] enemies = Object.FindObjectsByType<Enemy>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+        Enemy[] enemies = Object.FindObjectsByType<Enemy>(
+            FindObjectsInactive.Exclude,
+            FindObjectsSortMode.None
+        );
 
         Enemy closest = null;
         float smallestDistance = float.MaxValue;
@@ -14,9 +18,9 @@ public static class EnemyFinder
         foreach (Enemy e in enemies)
         {
             Vector2 enemyPos = e.transform.position;
-            float dx = enemyPos.x - origin.x;
-            float dy = enemyPos.y - origin.y;
-            float distSq = dx * dx + dy * dy;
+            float distancex = enemyPos.x - origin.x;
+            float distancey = enemyPos.y - origin.y;
+            float distSq = distancex * distancex + distancey * distancey;
 
             if (distSq <= rangeSquared && distSq < smallestDistance)
             {
@@ -27,9 +31,7 @@ public static class EnemyFinder
 
         return closest;
     }
-
-    //mergesort
-    public static Enemy FindClosestEnemyToBaseInRange(Vector2 towerPos, float towerRange)
+    public static Enemy FindClosestEnemyToBaseInRange(float range)
     {
         GameObject baseObj = GameObject.FindWithTag("Base");
         if (baseObj == null)
@@ -38,16 +40,25 @@ public static class EnemyFinder
         }
 
         Vector2 basePos = baseObj.transform.position;
-        Enemy[] all = Object.FindObjectsByType<Enemy>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+        float rangeSq = range * range;
 
-        float rangeSq = towerRange * towerRange;
+        Enemy[] all = Object.FindObjectsByType<Enemy>(
+            FindObjectsInactive.Exclude,
+            FindObjectsSortMode.None
+        );
+
         int count = 0;
         for (int i = 0; i < all.Length; i++)
         {
-            float dsq = ((Vector2)all[i].transform.position - towerPos).sqrMagnitude;
-            if (dsq <= rangeSq)
+            Vector2 pos = all[i].transform.position;
+            float distancex = pos.x - basePos.x;
+            float distancey = pos.y - basePos.y;
+            float distSq = distancex * distancex + distancey * distancey;
+
+            if (distSq <= rangeSq)
             {
-                all[count++] = all[i];
+                all[count] = all[i];
+                count++;
             }
         }
 
@@ -58,57 +69,102 @@ public static class EnemyFinder
 
         Enemy[] arr = new Enemy[count];
         Enemy[] tmp = new Enemy[count];
-        System.Array.Copy(all, arr, count);
-
-        MergeSort(arr, tmp, 0, count - 1, basePos);
-        return arr[0];
-    }
-
-    private static void MergeSort(Enemy[] arr, Enemy[] tmp, int left, int right, Vector2 basePos)
-    {
-        if (left >= right)
+        for (int i = 0; i < count; i++)
         {
-            return;
+            arr[i] = all[i];
         }
 
-        int mid = (left + right) >> 1;
-        MergeSort(arr, tmp, left, mid, basePos);
-        MergeSort(arr, tmp, mid + 1, right, basePos);
-
-        int i = left;
-        int j = mid + 1;
-        int k = left;
-        while (i <= mid && j <= right)
+        void MergeSort(int left, int right)
         {
-            float di = ((Vector2)arr[i].transform.position - basePos).sqrMagnitude;
-            float dj = ((Vector2)arr[j].transform.position - basePos).sqrMagnitude;
+            if (left >= right)
+            {
+                return;
+            }
 
-            if (di <= dj)
+            int mid = left + (right - left) / 2;
+
+            MergeSort(left, mid);
+            MergeSort(mid + 1, right);
+
+            int i = left;
+            int j = mid + 1;
+            int k = left;
+
+            while (i <= mid && j <= right)
+            {
+                float di = ((Vector2)arr[i].transform.position - basePos).sqrMagnitude;
+                float dj = ((Vector2)arr[j].transform.position - basePos).sqrMagnitude;
+
+                if (di <= dj)
+                {
+                    tmp[k] = arr[i];
+                    k++;
+                    i++;
+                }
+                else
+                {
+                    tmp[k] = arr[j];
+                    k++;
+                    j++;
+                }
+            }
+
+            while (i <= mid)
             {
                 tmp[k] = arr[i];
+                k++;
                 i++;
             }
-            else
+
+            while (j <= right)
             {
                 tmp[k] = arr[j];
+                k++;
                 j++;
             }
-            k++;
+
+            for (int t = left; t <= right; t++)
+            {
+                arr[t] = tmp[t];
+            }
         }
 
-        while (i <= mid)
-        {
-            tmp[k++] = arr[i++];
-        }
-
-        while (j <= right)
-        {
-            tmp[k++] = arr[j++];
-        }
-
-        for (int t = left; t <= right; t++)
-        {
-            arr[t] = tmp[t];
-        }
+        MergeSort(0, count - 1);
+        return arr[0];
     }
+    public static Enemy FindHighestHealthTarget(Vector2 origin, float range)
+    {
+        float rangeSquared = range * range;
+
+        Enemy[] allEnemies = Object.FindObjectsByType<Enemy>(
+            FindObjectsInactive.Exclude,
+            FindObjectsSortMode.None
+        );
+
+        Enemy highestHealthEnemy = null;
+        float highestHealth = float.MinValue;
+
+        for (int i = 0; i < allEnemies.Length; i++) // Linear search through all the enemies for highest health
+        {
+            Enemy enemy = allEnemies[i]; // current enemy that it looks through
+            Vector2 position = enemy.transform.position; // gets position of enemy
+            float distanceX = position.x - origin.x;
+            float distanceY = position.y - origin.y;
+            float distanceSquared = distanceX * distanceX + distanceY * distanceY; //distance
+
+            if (distanceSquared <= rangeSquared) // only consider enemies within range
+            {
+                float health = enemy.GetHealth(); 
+                if (health > highestHealth)
+                {
+                    highestHealth = health;
+                    highestHealthEnemy = enemy;
+                }
+            }
+        }
+
+        return highestHealthEnemy;
+    }
+
+   
 }

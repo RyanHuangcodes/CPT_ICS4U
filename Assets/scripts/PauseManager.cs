@@ -1,3 +1,4 @@
+// PauseManager.cs
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
@@ -8,12 +9,16 @@ public class PauseManager : MonoBehaviour
     {
         // 1) Player
         var player = GameObject.FindWithTag("Player");
-        if (player == null) { Debug.LogError("[PauseManager] No Player!"); return; }
+        if (player == null)
+        {
+            Debug.LogError("[PauseManager] No Player!");
+            return;
+        }
 
         // 2) Gold
         int gold = GoldManager.Instance.GetGold();
 
-        // 3) Towers
+        // 3) Towers — use the new API
         var towerData = new List<TowerSaveData>();
         var towers = Object.FindObjectsByType<Tower>(
             FindObjectsInactive.Exclude,
@@ -26,12 +31,12 @@ public class PauseManager : MonoBehaviour
                 type,
                 tower.transform.position,
                 tower.GetHealth(),
-                tower.GetMaxHealth(),     // NEW
+                tower.GetMaxHealth(),
                 tower.GetLevel()
             ));
         }
 
-        // 4) Enemies
+        // 4) Enemies — also use the new API
         var enemyData = new List<EnemySaveData>();
         var enemies = Object.FindObjectsByType<Enemy>(
             FindObjectsInactive.Exclude,
@@ -59,7 +64,7 @@ public class PauseManager : MonoBehaviour
         // 6) Knife tier
         int knifeTier = KnifeThrower.Instance.CurrentUpgradeTier;
 
-        // 7) Build SaveData
+        // 7) Build SaveData (including dual‐MG count)
         var data = new SaveData(
             player.transform.position,
             gold,
@@ -67,7 +72,8 @@ public class PauseManager : MonoBehaviour
             enemyData,
             BasePlacementTracker.Instance.GetPlacedCount(),
             GoldMinePlacementTracker.Instance.GetPlacedCount(),
-            CannonPlacementTracker.Instance.GetPlacedCount(), // ← NEW
+            CannonPlacementTracker.Instance.GetPlacedCount(),
+            DualMachineGunPlacementTracker.Instance.GetPlacedCount(),
             currentWave,
             spawnedThisWave,
             timeUntilNextSpawn,
@@ -77,7 +83,7 @@ public class PauseManager : MonoBehaviour
             knifeTier
         );
 
-        // 8) Write & switch
+        // 8) Save and switch to pause scene
         SaveManager.SaveGame(data);
         SceneManager.LoadScene("PauseScene");
     }

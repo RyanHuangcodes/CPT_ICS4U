@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class DraggableTowerUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     [Header("Tower Settings")]
-    public GameObject TowerPrefab;    // Prefab to spawn (Base, GoldMine, MachineGun, Cannon)
+    public GameObject TowerPrefab;    // Prefab to spawn (Base, GoldMine, MachineGun, DualMachineGun, Cannon)
     public LayerMask PlayerLayer;     // LayerMask for Player collisions
     public LayerMask TowerLayer;      // LayerMask for existing towers
     public int MaxAllowed = 4;        // Maximum of this tower type
@@ -23,7 +23,6 @@ public class DraggableTowerUI : MonoBehaviour, IBeginDragHandler, IDragHandler, 
 
     private void Start()
     {
-        // Initialize placed count from the correct tracker
         if (TowerPrefab.name.Contains("Base"))
         {
             _placedCount = BasePlacementTracker.Instance?.GetPlacedCount() ?? 0;
@@ -31,6 +30,10 @@ public class DraggableTowerUI : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         else if (TowerPrefab.name.Contains("GoldMine"))
         {
             _placedCount = GoldMinePlacementTracker.Instance?.GetPlacedCount() ?? 0;
+        }
+        else if (TowerPrefab.name.Contains("DualMachineGun"))
+        {
+            _placedCount = DualMachineGunPlacementTracker.Instance?.GetPlacedCount() ?? 0;
         }
         else if (TowerPrefab.name.Contains("MachineGun"))
         {
@@ -46,7 +49,6 @@ public class DraggableTowerUI : MonoBehaviour, IBeginDragHandler, IDragHandler, 
 
     private void Update()
     {
-        // Poll the tracker and refresh UI if it changed
         int current = 0;
 
         if (TowerPrefab.name.Contains("Base"))
@@ -56,6 +58,10 @@ public class DraggableTowerUI : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         else if (TowerPrefab.name.Contains("GoldMine"))
         {
             current = GoldMinePlacementTracker.Instance.GetPlacedCount();
+        }
+        else if (TowerPrefab.name.Contains("DualMachineGun"))
+        {
+            current = DualMachineGunPlacementTracker.Instance.GetPlacedCount();
         }
         else if (TowerPrefab.name.Contains("MachineGun"))
         {
@@ -80,21 +86,22 @@ public class DraggableTowerUI : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         _previewRenderer.color = _invalidColor;
         _preview.GetComponent<Collider2D>().enabled = false;
 
-        // Disable any shooting or Tower logic on the preview
-        var shooters = _preview.GetComponentsInChildren<MachineGunTower>();
-        foreach (var s in shooters)
+        foreach (var mg in _preview.GetComponentsInChildren<MachineGunTower>())
         {
-            s.enabled = false;
+            mg.enabled = false;
         }
 
-        var cannons = _preview.GetComponentsInChildren<Cannon>();
-        foreach (var c in cannons)
+        foreach (var dmg in _preview.GetComponentsInChildren<DualMachineGunTower>())
+        {
+            dmg.enabled = false;
+        }
+
+        foreach (var c in _preview.GetComponentsInChildren<Cannon>())
         {
             c.enabled = false;
         }
 
-        var towers = _preview.GetComponentsInChildren<Tower>();
-        foreach (var t in towers)
+        foreach (var t in _preview.GetComponentsInChildren<Tower>())
         {
             t.enabled = false;
         }
@@ -106,7 +113,6 @@ public class DraggableTowerUI : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         worldPos.z = 0f;
         _preview.transform.position = worldPos;
 
-        // Prevent placing non-Base before Base exists
         if (!TowerPrefab.name.Contains("Base") &&
             (BasePlacementTracker.Instance?.GetPlacedCount() ?? 0) == 0)
         {
@@ -123,7 +129,6 @@ public class DraggableTowerUI : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         worldPos.z = 0f;
 
-        // Prevent dependent towers before Base
         if (!TowerPrefab.name.Contains("Base") &&
             (BasePlacementTracker.Instance?.GetPlacedCount() ?? 0) == 0)
         {
@@ -134,16 +139,12 @@ public class DraggableTowerUI : MonoBehaviour, IBeginDragHandler, IDragHandler, 
 
         if (IsValidPlacement(worldPos))
         {
-            // 1) Instantiate the tower
             GameObject placed = Instantiate(TowerPrefab, worldPos, Quaternion.identity);
 
-            // 2) Update its tracker & our local count
             if (TowerPrefab.name.Contains("Base"))
             {
                 BasePlacementTracker.Instance.Increment();
                 _placedCount = BasePlacementTracker.Instance.GetPlacedCount();
-
-                // 3) Assign the new Base into the WaveManager and start waves
                 WaveManager.Instance.BaseTransform = placed.transform;
                 WaveManager.Instance.StartWaves();
             }
@@ -151,6 +152,11 @@ public class DraggableTowerUI : MonoBehaviour, IBeginDragHandler, IDragHandler, 
             {
                 GoldMinePlacementTracker.Instance.Increment();
                 _placedCount = GoldMinePlacementTracker.Instance.GetPlacedCount();
+            }
+            else if (TowerPrefab.name.Contains("DualMachineGun"))
+            {
+                DualMachineGunPlacementTracker.Instance.Increment();
+                _placedCount = DualMachineGunPlacementTracker.Instance.GetPlacedCount();
             }
             else if (TowerPrefab.name.Contains("MachineGun"))
             {

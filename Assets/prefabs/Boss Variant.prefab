@@ -1,0 +1,104 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &7139346211698101964
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4659418053672601474, guid: 85746f599db774ce8af14544b8b23f30, type: 3}
+      propertyPath: m_Name
+      value: Boss Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 8925676910383145717, guid: 85746f599db774ce8af14544b8b23f30, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8925676910383145717, guid: 85746f599db774ce8af14544b8b23f30, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8925676910383145717, guid: 85746f599db774ce8af14544b8b23f30, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -153
+      objectReference: {fileID: 0}
+    - target: {fileID: 8925676910383145717, guid: 85746f599db774ce8af14544b8b23f30, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8925676910383145717, guid: 85746f599db774ce8af14544b8b23f30, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8925676910383145717, guid: 85746f599db774ce8af14544b8b23f30, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8925676910383145717, guid: 85746f599db774ce8af14544b8b23f30, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8925676910383145717, guid: 85746f599db774ce8af14544b8b23f30, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8925676910383145717, guid: 85746f599db774ce8af14544b8b23f30, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8925676910383145717, guid: 85746f599db774ce8af14544b8b23f30, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8925676910383145717, guid: 85746f599db774ce8af14544b8b23f30, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8925676910383145717, guid: 85746f599db774ce8af14544b8b23f30, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6439694512917015578, guid: 85746f599db774ce8af14544b8b23f30, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4659418053672601474, guid: 85746f599db774ce8af14544b8b23f30, type: 3}
+      insertIndex: 3
+      addedObject: {fileID: -6511009777180130220}
+  m_SourcePrefab: {fileID: 100100000, guid: 85746f599db774ce8af14544b8b23f30, type: 3}
+--- !u!1 &2575383361689831758 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4659418053672601474, guid: 85746f599db774ce8af14544b8b23f30, type: 3}
+  m_PrefabInstance: {fileID: 7139346211698101964}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-6511009777180130220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2575383361689831758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d97bee91ec87dc34585725da2d5d2262, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _health: 1000
+  _maxHealth: 1000
+  _damage: 100
+  _speed: 5
+  BaseTransform: {fileID: 0}
+  ObstacleLayers:
+    serializedVersion: 2
+    m_Bits: 768
+  AttackRange: 2
+  AttackCooldown: 0.75
+  MoveForce: 20
+  Rb: {fileID: 0}
+  MoveDirection: {x: 0, y: 0}
+  LastAttackTime: 0
+  _bossAttackRange: 3
+  _bossAttackCooldown: 1.5

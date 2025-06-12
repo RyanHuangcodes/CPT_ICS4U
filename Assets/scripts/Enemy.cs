@@ -52,7 +52,6 @@ public class Enemy : Entity
 
         if (distance <= AttackRange && Time.time >= LastAttackTime + AttackCooldown)
         {
-            // Stop moving during attack
             MoveDirection = Vector2.zero;
             Rb.linearVelocity = Vector2.zero;
             _isAttacking = true;
@@ -103,7 +102,7 @@ public class Enemy : Entity
         }
     }
 
-    public void ApplyKnockback(Vector2 direction, float force)
+    public virtual void ApplyKnockback(Vector2 direction, float force)
     {
         if (Rb != null && force > 0f)
             Rb.AddForce(direction * force, ForceMode2D.Impulse);

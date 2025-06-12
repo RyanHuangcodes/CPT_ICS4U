@@ -1,6 +1,6 @@
-using System;                        
-using System.Collections.Generic;   
-using UnityEngine;                   
+using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 [Serializable]
 public class SaveData
@@ -12,7 +12,8 @@ public class SaveData
 
     public int BasePlaced;
     public int GoldMinePlaced;
-    public int CannonPlaced;      
+    public int CannonPlaced;
+    public int DualMachineGunPlaced;     
 
     public int CurrentWave;
     public int SpawnedInCurrentWave;
@@ -29,7 +30,8 @@ public class SaveData
         List<EnemySaveData> enemies,
         int baseCount,
         int mineCount,
-        int cannonCount,         
+        int cannonCount,
+        int dualMachineGunCount,         
         int currentWave,
         int spawnedInWave,
         float timeUntilNextSpawn,
@@ -37,21 +39,23 @@ public class SaveData
         float damageMul,
         int postBossCycle,
         int knifeTier
-    ) {
-        PlayerPosition       = playerPos;
-        Gold                 = gold;
-        Towers               = towers;
-        Enemies              = enemies;
-        BasePlaced           = baseCount;
-        GoldMinePlaced       = mineCount;
-        CannonPlaced         = cannonCount; 
-        CurrentWave          = currentWave;
-        SpawnedInCurrentWave = spawnedInWave;
-        TimeUntilNextSpawn   = timeUntilNextSpawn;
-        HealthMultiplier     = healthMul;
-        DamageMultiplier     = damageMul;
-        PostBossCycle        = postBossCycle;
-        KnifeTier            = knifeTier;
+    )
+    {
+        PlayerPosition           = playerPos;
+        Gold                     = gold;
+        Towers                   = towers;
+        Enemies                  = enemies;
+        BasePlaced               = baseCount;
+        GoldMinePlaced           = mineCount;
+        CannonPlaced             = cannonCount;
+        DualMachineGunPlaced     = dualMachineGunCount;  
+        CurrentWave              = currentWave;
+        SpawnedInCurrentWave     = spawnedInWave;
+        TimeUntilNextSpawn       = timeUntilNextSpawn;
+        HealthMultiplier         = healthMul;
+        DamageMultiplier         = damageMul;
+        PostBossCycle            = postBossCycle;
+        KnifeTier                = knifeTier;
     }
 }
 

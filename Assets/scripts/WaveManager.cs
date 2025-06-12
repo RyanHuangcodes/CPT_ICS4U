@@ -127,9 +127,15 @@ public class WaveManager : MonoBehaviour
 
             if (_currentWave % 10 == 0)
             {
-                SpawnBossWave(_currentWave);
+                // compute how many cycles have completed (0 for waves 1-10, 1 for 11-20, etc.)
+                int cycleIdx = Mathf.Max(0, (_currentWave - 1) / 10);
+                float bossHealthMul = Mathf.Pow(HealthMultiplierPerCycle, cycleIdx);
+                float bossDamageMul = Mathf.Pow(DamageMultiplierPerCycle, cycleIdx);
+
+                SpawnBossWave(_currentWave, bossHealthMul, bossDamageMul);
                 OnBossWaveStarted?.Invoke(_currentWave);
 
+                // advance the color cycle for common enemies
                 _postBossCycle++;
                 _healthMul *= HealthMultiplierPerCycle;
                 _damageMul *= DamageMultiplierPerCycle;
@@ -216,13 +222,13 @@ public class WaveManager : MonoBehaviour
         e.SetDamage(Mathf.RoundToInt(e.GetDamage()     * _damageMul));
     }
 
-    private void SpawnBossWave(int waveNumber)
+    private void SpawnBossWave(int waveNumber, float healthMul, float damageMul)
     {
         Vector3 pos = BaseTransform.position + Vector3.up * SpawnDistance;
         var boss = Instantiate(BossEnemyPrefab, pos, Quaternion.identity);
         var e    = boss.GetComponent<Entity>();
-        e.SetHealth(Mathf.RoundToInt(e.GetMaxHealth() * _healthMul * 2f));
-        e.SetDamage(Mathf.RoundToInt(e.GetDamage()     * _damageMul * 1.5f));
+        e.SetHealth(Mathf.RoundToInt(e.GetMaxHealth() * 2f * healthMul));
+        e.SetDamage(Mathf.RoundToInt(e.GetDamage()     * 1.5f * damageMul));
     }
 
     private void CycleCommonEnemyColor()

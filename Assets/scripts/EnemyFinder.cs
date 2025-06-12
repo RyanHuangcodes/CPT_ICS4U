@@ -40,10 +40,7 @@ public static class EnemyFinder
         }
 
         Vector2 basePos = baseObj.transform.position;
-        Enemy[] all = Object.FindObjectsOfType<Enemy>(
-            FindObjectsInactive.Exclude,
-            FindObjectsSortMode.None
-        );
+        Enemy[] all = Object.FindObjectsByType<Enemy>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
 
         float rangeSq = towerRange * towerRange;
         int count = 0;

@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class Boss : Enemy
 {
-    //override boss
+    //override enemy
     [SerializeField] private float _bossAttackRange    = 3f;
     [SerializeField] private float _bossAttackCooldown = 1.5f;
 
-    private void Start()
+    protected override void Start()
     {
         AttackRange = _bossAttackRange;
         AttackCooldown = _bossAttackCooldown;

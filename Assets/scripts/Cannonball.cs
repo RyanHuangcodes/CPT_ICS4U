@@ -1,53 +1,65 @@
 using UnityEngine;
-
+//gpt
+[RequireComponent(typeof(Rigidbody2D), typeof(Collider2D), typeof(SpriteRenderer))]
 public class Cannonball : MonoBehaviour
 {
+    [Header("Movement")]
     public float Speed = 10f;
-    public LayerMask EnemyLayer;
 
-    private Vector2 _direction;
-    private int _damage;
-    private float _splashRadius;
-    private float _knockbackForce;
-    private bool _fired = false;
+    [Header("Damage")]
+    public LayerMask EnemyLayer;
+    private int     _damage;
+    private float   _splashRadius;
+    private float   _knockbackForce;
+
+    private Rigidbody2D _rb;
+
+    void Awake()
+    {
+        _rb = GetComponent<Rigidbody2D>();
+        _rb.bodyType = RigidbodyType2D.Kinematic;
+
+        var col = GetComponent<Collider2D>();
+        col.isTrigger = true;
+
+        var sr = GetComponent<SpriteRenderer>();
+        sr.sortingOrder = 10;  // draw on top
+    }
 
     public void Setup(Vector2 direction, int damage, float splashRadius, float knockbackForce)
     {
-        _direction = direction.normalized;
-        _damage = damage;
-        _splashRadius = splashRadius;
-        _knockbackForce = knockbackForce;
-        _fired = true;
+        _damage        = damage;
+        _splashRadius  = splashRadius;
+        _knockbackForce= knockbackForce;
 
-        Destroy(gameObject, 5f); // Auto-cleanup
+        _rb.linearVelocity = direction.normalized * Speed;
+
+
+        Destroy(gameObject, 2f);
     }
-
-    void Update()
-    {
-        if (_fired)
-            transform.Translate(_direction * Speed * Time.deltaTime, Space.World);
-    }
-
     void OnTriggerEnter2D(Collider2D other)
     {
-        int otherLayer = 1 << other.gameObject.layer;
-        bool isEnemyLayer = (otherLayer & EnemyLayer) != 0;
-
-        if (!isEnemyLayer)
-        {
+        if (((1 << other.gameObject.layer) & EnemyLayer) == 0)
             return;
-        }
 
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, _splashRadius, EnemyLayer);
+        Vector2 center = transform.position;
+
+        Collider2D[] hits = Physics2D.OverlapCircleAll(center, _splashRadius, EnemyLayer);
         foreach (var hit in hits)
         {
-            Enemy enemy = hit.GetComponent<Enemy>();
-            if (enemy != null)
-            {
-                enemy.TakeDamage(_damage);
-                Vector2 knockDir = (enemy.transform.position - transform.position).normalized;
-                enemy.ApplyKnockback(knockDir, _knockbackForce);
-            }
+            Enemy e = hit.GetComponent<Enemy>();
+            if (e == null) continue;
+
+            Vector2 enemyPos = e.transform.position;
+
+            Vector2 dir  = (enemyPos - center).normalized;
+            float   dist = Vector2.Distance(enemyPos, center);
+
+            float falloff = Mathf.Clamp01(1f - (dist / _splashRadius));
+            float force   = _knockbackForce * falloff;
+
+            e.TakeDamage(_damage);
+            e.ApplyKnockback(dir, force);
         }
 
         Destroy(gameObject);
@@ -58,6 +70,4 @@ public class Cannonball : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, _splashRadius);
     }
-
-    // Gpt code
 }

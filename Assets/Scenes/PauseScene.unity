@@ -870,6 +870,7 @@ MonoBehaviour:
   BasePrefab: {fileID: 1343696725231892735, guid: 7ceabbfe27f7c477992f960b8a8600eb, type: 3}
   GoldMinePrefab: {fileID: 3691274078723426916, guid: 9c8062eb62bda45139071f19d5cc1c81, type: 3}
   MachineGunPrefab: {fileID: 7038762841579107402, guid: 566c4cac67bf74a95841a057837d65de, type: 3}
+  CannonPrefab: {fileID: 8683094548359234002, guid: b55c87d1c237f48a6ac6a15254444e15, type: 3}
   CommonEnemyPrefab: {fileID: 4659418053672601474, guid: 85746f599db774ce8af14544b8b23f30, type: 3}
   BossEnemyPrefab: {fileID: 4659418053672601474, guid: 85746f599db774ce8af14544b8b23f30, type: 3}
 --- !u!1 &1486307476

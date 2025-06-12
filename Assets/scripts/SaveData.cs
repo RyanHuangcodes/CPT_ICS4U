@@ -1,6 +1,6 @@
-using System;
-using System.Collections.Generic;
-using UnityEngine;
+using System;                        
+using System.Collections.Generic;   
+using UnityEngine;                   
 
 [Serializable]
 public class SaveData
@@ -9,8 +9,10 @@ public class SaveData
     public int Gold;
     public List<TowerSaveData> Towers;
     public List<EnemySaveData> Enemies;
+
     public int BasePlaced;
     public int GoldMinePlaced;
+    public int CannonPlaced;      
 
     public int CurrentWave;
     public int SpawnedInCurrentWave;
@@ -27,6 +29,7 @@ public class SaveData
         List<EnemySaveData> enemies,
         int baseCount,
         int mineCount,
+        int cannonCount,         
         int currentWave,
         int spawnedInWave,
         float timeUntilNextSpawn,
@@ -35,19 +38,20 @@ public class SaveData
         int postBossCycle,
         int knifeTier
     ) {
-        PlayerPosition         = playerPos;
-        Gold                   = gold;
-        Towers                 = towers;
-        Enemies                = enemies;
-        BasePlaced             = baseCount;
-        GoldMinePlaced         = mineCount;
-        CurrentWave            = currentWave;
-        SpawnedInCurrentWave   = spawnedInWave;
-        TimeUntilNextSpawn     = timeUntilNextSpawn;
-        HealthMultiplier       = healthMul;
-        DamageMultiplier       = damageMul;
-        PostBossCycle          = postBossCycle;
-        KnifeTier              = knifeTier;   
+        PlayerPosition       = playerPos;
+        Gold                 = gold;
+        Towers               = towers;
+        Enemies              = enemies;
+        BasePlaced           = baseCount;
+        GoldMinePlaced       = mineCount;
+        CannonPlaced         = cannonCount; 
+        CurrentWave          = currentWave;
+        SpawnedInCurrentWave = spawnedInWave;
+        TimeUntilNextSpawn   = timeUntilNextSpawn;
+        HealthMultiplier     = healthMul;
+        DamageMultiplier     = damageMul;
+        PostBossCycle        = postBossCycle;
+        KnifeTier            = knifeTier;
     }
 }
 
@@ -56,8 +60,8 @@ public class TowerSaveData
 {
     public string Type;
     public Vector2 Position;
-    public int Health;     
-    public int MaxHealth;  
+    public int Health;
+    public int MaxHealth;
     public int Level;
 
     public TowerSaveData(string type, Vector2 pos, int health, int maxHealth, int level)

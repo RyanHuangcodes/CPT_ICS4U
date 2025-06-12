@@ -2,24 +2,24 @@ using UnityEngine;
 
 public class Cannon : Tower
 {
-    public float FireRate = 1.1f;
-    public float Range = 7.0f;
-    public int Damage = 15;
-    public float SplashRadius = 2.0f;
+    [Header("Firing Stats")]
+    public float FireRate       = 1.1f;
+    public float Range          = 7f;
+    public int   Damage         = 15;
+    public float SplashRadius   = 2f;
     public float KnockbackForce = 1f;
+
+    [Header("Projectile Prefab")]
+    public GameObject CannonballPrefab;
+
+    private const float _muzzleDistance = 1.2f;
     private float _fireCooldown;
 
-    public GameObject CannonballPrefab;
-    public Transform MuzzlePoint;
-  
-
-    
-
-  protected override void Start()
+    protected override void Start()
     {
+        base.Start();
         SetInitialized(true);
         _fireCooldown = 0f;
- //       _rangeSquared = Range * Range;
     }
 
     protected override void Update()
@@ -27,37 +27,50 @@ public class Cannon : Tower
         base.Update();
         _fireCooldown -= Time.deltaTime;
 
-        Enemy target = EnemyFinder.FindClosestEnemyInRange(transform.position, Range);
-        if (target == null) return;
-
-        Vector2 dir = (target.transform.position - transform.position).normalized;
-
-        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0f, 0f, angle);
-
+        // only try to fire (and rotate) when cooldown has elapsed
         if (_fireCooldown <= 0f)
         {
-            SpawnAndFireCannonball(dir);
-            _fireCooldown = 1f / FireRate;
+            Enemy target = EnemyFinder.FindClosestEnemyToBaseInRange(transform.position, Range);
+            if (target != null)
+            {
+                // compute direction & angle at the moment of shooting
+                Vector2 dir = (target.transform.position - transform.position).normalized;
+                float ang = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+                float dispA = ang - 90f;               // sprite points +Y by default
+
+                // rotate the cannon just once, right before firing
+                transform.rotation = Quaternion.Euler(0f, 0f, dispA);
+
+                // spawn & launch
+                SpawnAndFireCannonball(dir);
+
+                // reset cooldown
+                _fireCooldown = 1f / FireRate;
+            }
         }
-    } //gpt rotation
+    }
 
     private void SpawnAndFireCannonball(Vector2 direction)
     {
-        if (CannonballPrefab == null || MuzzlePoint == null) return;
-
-        // This is a Composition as cannon owns the cannonball
-        GameObject cb = Instantiate(CannonballPrefab, MuzzlePoint.position, Quaternion.identity, transform); // instantiate spawns cannonball in
-        Cannonball cannonball = cb.GetComponent<Cannonball>();
-        if (cannonball != null)
+        if (CannonballPrefab == null)
         {
-            cannonball.Setup(direction, Damage, SplashRadius, KnockbackForce);
+            Debug.LogError($"[{name}] Missing CannonballPrefab!");
+            return;
         }
+
+        // fire from a point 1.2 units out along the barrel
+        Vector3 spawnPos = transform.position + (Vector3)direction * _muzzleDistance;
+        Quaternion spawnRot = transform.rotation;  // already set above
+
+        var cbObj = Instantiate(CannonballPrefab, spawnPos, spawnRot);
+        var cb    = cbObj.GetComponent<Cannonball>();
+        if (cb != null)
+            cb.Setup(direction, Damage, SplashRadius, KnockbackForce);
     }
 
     protected override void Die()
     {
         base.Die();
-        // Aggregation, cannonballs are not destroyed when the cannon dies
+        // in-flight projectiles remain
     }
 }

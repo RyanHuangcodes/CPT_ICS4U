@@ -6,10 +6,7 @@ public static class EnemyFinder
     public static Enemy FindClosestEnemyInRange(Vector2 origin, float range)
     {
         float rangeSquared = range * range;
-        Enemy[] enemies = Object.FindObjectsByType<Enemy>(
-            FindObjectsInactive.Exclude,
-            FindObjectsSortMode.None
-        );
+        Enemy[] enemies = Object.FindObjectsByType<Enemy>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
 
         Enemy closest = null;
         float smallestDistance = float.MaxValue;
@@ -30,7 +27,9 @@ public static class EnemyFinder
 
         return closest;
     }
-    public static Enemy FindClosestEnemyToBaseInRange(float range)
+
+    //mergesort
+    public static Enemy FindClosestEnemyToBaseInRange(Vector2 towerPos, float towerRange)
     {
         GameObject baseObj = GameObject.FindWithTag("Base");
         if (baseObj == null)
@@ -39,25 +38,16 @@ public static class EnemyFinder
         }
 
         Vector2 basePos = baseObj.transform.position;
-        float rangeSq = range * range;
+        Enemy[] all = Object.FindObjectsByType<Enemy>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
 
-        Enemy[] all = Object.FindObjectsByType<Enemy>(
-            FindObjectsInactive.Exclude,
-            FindObjectsSortMode.None
-        );
-
+        float rangeSq = towerRange * towerRange;
         int count = 0;
         for (int i = 0; i < all.Length; i++)
         {
-            Vector2 pos = all[i].transform.position;
-            float dx = pos.x - basePos.x;
-            float dy = pos.y - basePos.y;
-            float distSq = dx * dx + dy * dy;
-
-            if (distSq <= rangeSq)
+            float dsq = ((Vector2)all[i].transform.position - towerPos).sqrMagnitude;
+            if (dsq <= rangeSq)
             {
-                all[count] = all[i];
-                count++;
+                all[count++] = all[i];
             }
         }
 
@@ -66,66 +56,59 @@ public static class EnemyFinder
             return null;
         }
 
-        Enemy[] arr  = new Enemy[count];
-        Enemy[] temp = new Enemy[count];
+        Enemy[] arr = new Enemy[count];
+        Enemy[] tmp = new Enemy[count];
         System.Array.Copy(all, arr, count);
 
-        void MergeSort(int left, int right)
+        MergeSort(arr, tmp, 0, count - 1, basePos);
+        return arr[0];
+    }
+
+    private static void MergeSort(Enemy[] arr, Enemy[] tmp, int left, int right, Vector2 basePos)
+    {
+        if (left >= right)
         {
-            if (left >= right)
-            {
-                return;
-            }
-
-            int mid = (left + right) >> 1;
-
-            MergeSort(left, mid);
-            MergeSort(mid + 1, right);
-
-            int i = left;
-            int j = mid + 1;
-            int k = left;
-
-            while (i <= mid && j <= right)
-            {
-                float di = ((Vector2)arr[i].transform.position - basePos).sqrMagnitude;
-                float dj = ((Vector2)arr[j].transform.position - basePos).sqrMagnitude;
-
-                if (di <= dj)
-                {
-                    temp[k] = arr[i];
-                    k++;
-                    i++;
-                }
-                else
-                {
-                    temp[k] = arr[j];
-                    k++;
-                    j++;
-                }
-            }
-
-            while (i <= mid)
-            {
-                temp[k] = arr[i];
-                k++;
-                i++;
-            }
-
-            while (j <= right)
-            {
-                temp[k] = arr[j];
-                k++;
-                j++;
-            }
-
-            for (int t = left; t <= right; t++)
-            {
-                arr[t] = temp[t];
-            }
+            return;
         }
 
-        MergeSort(0, count - 1);
-        return arr[0];
+        int mid = (left + right) >> 1;
+        MergeSort(arr, tmp, left, mid, basePos);
+        MergeSort(arr, tmp, mid + 1, right, basePos);
+
+        int i = left;
+        int j = mid + 1;
+        int k = left;
+        while (i <= mid && j <= right)
+        {
+            float di = ((Vector2)arr[i].transform.position - basePos).sqrMagnitude;
+            float dj = ((Vector2)arr[j].transform.position - basePos).sqrMagnitude;
+
+            if (di <= dj)
+            {
+                tmp[k] = arr[i];
+                i++;
+            }
+            else
+            {
+                tmp[k] = arr[j];
+                j++;
+            }
+            k++;
+        }
+
+        while (i <= mid)
+        {
+            tmp[k++] = arr[i++];
+        }
+
+        while (j <= right)
+        {
+            tmp[k++] = arr[j++];
+        }
+
+        for (int t = left; t <= right; t++)
+        {
+            arr[t] = tmp[t];
+        }
     }
 }

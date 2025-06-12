@@ -67,13 +67,14 @@ public class PauseManager : MonoBehaviour
             enemyData,
             BasePlacementTracker.Instance.GetPlacedCount(),
             GoldMinePlacementTracker.Instance.GetPlacedCount(),
+            CannonPlacementTracker.Instance.GetPlacedCount(), // ← NEW
             currentWave,
             spawnedThisWave,
             timeUntilNextSpawn,
             healthMul,
             damageMul,
             postBossCycle,
-            knifeTier            // <-- new
+            knifeTier
         );
 
         // 8) Write & switch

@@ -1,4 +1,3 @@
-// UnpauseManager.cs
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
@@ -9,10 +8,11 @@ public class UnpauseManager : MonoBehaviour
     public GameObject BasePrefab;
     public GameObject GoldMinePrefab;
     public GameObject MachineGunPrefab;
+    public GameObject CannonPrefab;         // ← NEW
 
     [Header("Enemy Prefabs")]
     public GameObject CommonEnemyPrefab;
-    public GameObject BossEnemyPrefab;  // optional
+    public GameObject BossEnemyPrefab;
 
     private Dictionary<string, GameObject> _prefabMap;
 
@@ -25,7 +25,6 @@ public class UnpauseManager : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
-
         var data = SaveManager.LoadGame();
         if (data == null)
         {
@@ -33,15 +32,18 @@ public class UnpauseManager : MonoBehaviour
             return;
         }
 
-        // Restore player position and gold
+        // Restore player & gold
         var player = GameObject.FindWithTag("Player");
         if (player != null)
+        {
             player.transform.position = data.PlayerPosition;
+        }
         GoldManager.Instance.SetGold(data.Gold);
 
         // Restore placement trackers
         BasePlacementTracker.Instance.SetPlacedCount(data.BasePlaced);
         GoldMinePlacementTracker.Instance.SetPlacedCount(data.GoldMinePlaced);
+        CannonPlacementTracker.Instance.SetPlacedCount(data.CannonPlaced);  // ← NEW
 
         // Build prefab lookup
         _prefabMap = new Dictionary<string, GameObject>
@@ -49,12 +51,15 @@ public class UnpauseManager : MonoBehaviour
             { BasePrefab.name,       BasePrefab       },
             { GoldMinePrefab.name,   GoldMinePrefab   },
             { MachineGunPrefab.name, MachineGunPrefab },
+            { CannonPrefab.name,     CannonPrefab     },  // ← NEW
             { CommonEnemyPrefab.name, CommonEnemyPrefab }
         };
         if (BossEnemyPrefab != null)
+        {
             _prefabMap[BossEnemyPrefab.name] = BossEnemyPrefab;
+        }
 
-        // Restore towers
+        // Restore towers…
         foreach (var t in data.Towers)
         {
             if (_prefabMap.TryGetValue(t.Type, out var pf))
@@ -66,7 +71,10 @@ public class UnpauseManager : MonoBehaviour
                 comp.SetLevel(t.Level);
                 comp.SetInitialized(true);
             }
-            else Debug.LogWarning($"No prefab for tower '{t.Type}'");
+            else
+            {
+                Debug.LogWarning($"No prefab for tower '{t.Type}'");
+            }
         }
 
         // Restore enemies

@@ -71,6 +71,7 @@ public class Cannon : Tower
     protected override void Die()
     {
         base.Die();
+        CannonPlacementTracker.Instance?.Decrement();
         // in-flight projectiles remain
     }
 }

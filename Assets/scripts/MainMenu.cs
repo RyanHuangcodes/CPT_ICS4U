@@ -39,10 +39,23 @@ public class MainMenu : MonoBehaviour
     public void ReturnToMenu()
     {
         SceneManager.LoadScene("MainMenu");
+
         if (GoldManager.Instance != null)
             Destroy(GoldManager.Instance.gameObject);
+
+        // delete your temp save
         SaveManager.DeleteQuick();
+
+        // also zero out all placement trackers
+        if (BasePlacementTracker.Instance != null)          BasePlacementTracker.Instance.SetPlacedCount(0);
+        if (GoldMinePlacementTracker.Instance != null)      GoldMinePlacementTracker.Instance.SetPlacedCount(0);
+        if (MachineGunPlacementTracker.Instance != null)    MachineGunPlacementTracker.Instance.SetPlacedCount(0);
+        if (DualMachineGunPlacementTracker.Instance != null) DualMachineGunPlacementTracker.Instance.SetPlacedCount(0);
+        if (CannonPlacementTracker.Instance != null)        CannonPlacementTracker.Instance.SetPlacedCount(0);
+        if (PiercingCannonPlacementTracker.Instance != null) PiercingCannonPlacementTracker.Instance.SetPlacedCount(0);
+        if (MissileLauncherPlacementTracker.Instance != null) MissileLauncherPlacementTracker.Instance.SetPlacedCount(0);
     }
+
 
     public void OpenPreferences()
     {

@@ -56,8 +56,9 @@ public class Boss : Enemy
         while (left < mid + 1 && right <= end)
         {
             // calculate squared distance from origin to each tower
-            float distanceLeft = ((Vector2)towers[left].transform.position - origin).sqrMagnitude; // finds distance from origin to left tower
-            float distanceRight = ((Vector2)towers[right].transform.position - origin).sqrMagnitude;// distance to right tower
+            float distanceLeft = (towers[left].transform.position.x - origin.x) * (towers[left].transform.position.x - origin.x) + (towers[left].transform.position.y - origin.y) * (towers[left].transform.position.y - origin.y);
+            float distanceRight = (towers[right].transform.position.x - origin.x) * (towers[right].transform.position.x - origin.x) + (towers[right].transform.position.y - origin.y) * (towers[right].transform.position.y - origin.y);
+
 
             if (distanceLeft <= distanceRight)
             {

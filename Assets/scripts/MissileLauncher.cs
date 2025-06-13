@@ -36,7 +36,7 @@ public class MissileLauncher : Tower
         transform.rotation = Quaternion.Euler(0f, 0f, ang);
 
         SpawnAndLaunchMissile(dir);
-        _fireCooldown = 1f / FireRate;
+        _fireCooldown = 1f / FireRate; // gpt functions
     }
 
     private void SpawnAndLaunchMissile(Vector2 direction)
@@ -49,9 +49,9 @@ public class MissileLauncher : Tower
         Vector3 spawnPos = MuzzlePoint != null
             ? MuzzlePoint.position
             : transform.position + (Vector3)direction * 1.2f;
-        Quaternion spawnRot = transform.rotation;
+        Quaternion spawnRot = transform.rotation; // gpt last 4 lines
 
-        Missile m = Instantiate(MissilePrefab, spawnPos, spawnRot, transform);
+        Missile m = Instantiate(MissilePrefab, spawnPos, spawnRot, transform); // creates new missile, 
         m.Setup(direction, Damage, ExplosionRadius, KnockbackForce);
     }
 

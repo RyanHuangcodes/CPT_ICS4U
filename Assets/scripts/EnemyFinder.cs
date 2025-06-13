@@ -153,5 +153,87 @@ public static class EnemyFinder
         return highestHealthEnemy;
     }
 
-   
+    //search algorithm darren
+    public static Enemy FindLowestHealthTarget(Vector2 origin, float range)
+    {
+        float rangeSquared = range * range;
+        Enemy[] allEnemies = Object.FindObjectsByType<Enemy>(
+            FindObjectsInactive.Exclude,
+            FindObjectsSortMode.None
+        );
+
+        Enemy lowestHealthEnemy = null;
+        float lowestHealth = float.MaxValue;
+
+        for (int i = 0; i < allEnemies.Length; i++)
+        {
+            Enemy enemy = allEnemies[i];
+            Vector2 position = enemy.transform.position;
+
+            float distanceX = position.x - origin.x;
+            float distanceY = position.y - origin.y;
+            float distanceSquared = distanceX * distanceX + distanceY * distanceY;
+
+            if (distanceSquared <= rangeSquared)
+            {
+                float health = enemy.GetHealth();
+                if (health < lowestHealth)
+                {
+                    lowestHealth = health;
+                    lowestHealthEnemy = enemy;
+                }
+            }
+        }
+
+        return lowestHealthEnemy;
+    }
+
+    //sort algorithm darren
+    public static Enemy FindFurthestEnemyInRange(Vector2 origin, float range)
+    {
+        float rangeSquared = range * range;
+        Enemy[] allEnemies = Object.FindObjectsByType<Enemy>(
+            FindObjectsInactive.Exclude,
+            FindObjectsSortMode.None
+        );
+
+        List<Enemy> inRange = new List<Enemy>();
+        for (int i = 0; i < allEnemies.Length; i++)
+        {
+            Enemy enemy = allEnemies[i];
+            Vector2 pos = enemy.transform.position;
+
+            float dx = pos.x - origin.x;
+            float dy = pos.y - origin.y;
+            float distSq = dx * dx + dy * dy;
+
+            if (distSq <= rangeSquared)
+                inRange.Add(enemy);
+        }
+
+        if (inRange.Count == 0)
+            return null;
+
+        // Bubble
+        int n = inRange.Count;
+        for (int pass = 0; pass < n - 1; pass++)
+        {
+            for (int j = 0; j < n - pass - 1; j++)
+            {
+                float distJ = ((Vector2)inRange[j].transform.position - origin).sqrMagnitude;
+                float distJ1 = ((Vector2)inRange[j + 1].transform.position - origin).sqrMagnitude;
+
+                if (distJ1 > distJ)
+                {
+                    Enemy temp = inRange[j];
+                    inRange[j] = inRange[j + 1];
+                    inRange[j + 1] = temp;
+                }
+            }
+        }
+
+        return inRange[0];
+    }
+
+
 }

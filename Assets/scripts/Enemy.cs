@@ -85,14 +85,14 @@ public class Enemy : Entity
                 Rb.linearVelocity = Rb.linearVelocity.normalized * maxSpeed;
         }
     }
-
+//gpt
     protected virtual Transform AcquireTarget()
     {
         Vector2 dirToBase = (BaseTransform.position - transform.position).normalized;
         RaycastHit2D hit = Physics2D.Raycast(transform.position, dirToBase, Mathf.Infinity, ObstacleLayers);
         return hit.collider != null ? hit.collider.transform : BaseTransform;
     }
-
+//endgpt
     protected virtual void Attack(Transform target)
     {
         var entity = target.GetComponent<Entity>();

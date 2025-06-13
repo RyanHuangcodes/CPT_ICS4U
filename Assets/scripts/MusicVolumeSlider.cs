@@ -10,13 +10,9 @@ public class MusicVolumeSlider : MonoBehaviour
     {
         slider = GetComponent<Slider>();
         musicSource = FindObjectOfType<MusicPlayer247>().GetComponent<AudioSource>();
-
-        // Load saved volume or use default
         float savedVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
         slider.value = savedVolume;
         musicSource.volume = savedVolume;
-
-        // Listen for changes
         slider.onValueChanged.AddListener(OnVolumeChanged);
     }
 

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
+//gpt
 public class ShopManager : MonoBehaviour
 {
     public static ShopManager Instance { get; private set; }

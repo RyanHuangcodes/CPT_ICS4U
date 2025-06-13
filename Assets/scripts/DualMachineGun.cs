@@ -1,5 +1,5 @@
 using UnityEngine;
-
+//gpt
 public class DualMachineGunTower : Tower
 {
     [Header("Dual Machine Gun Stats")]

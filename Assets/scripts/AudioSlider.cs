@@ -14,11 +14,8 @@ public class MusicVolumeController : MonoBehaviour
             return;
         }
 
-        // Start slider at 0 (mute)
         volumeSlider.value = 0;
         musicSource.volume = 0;
-
-        // Add listener for slider changes
         volumeSlider.onValueChanged.AddListener(OnVolumeChanged);
     }
 

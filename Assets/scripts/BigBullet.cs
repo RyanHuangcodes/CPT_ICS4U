@@ -3,12 +3,9 @@
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
 public class BigBullet : MonoBehaviour
 {
-    [Header("Flight")]
     public float Speed = 15f;
     public float Range = 12f;
-
-    [Header("Damage")]
-    public int Damage = 50;
+    public int Damage = 10;
     public LayerMask EnemyLayer;
 
     private Vector2 _direction;
@@ -46,7 +43,9 @@ public class BigBullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if ((EnemyLayer.value & (1 << other.gameObject.layer)) == 0) return;
+        if ((EnemyLayer.value & (1 << other.gameObject.layer)) == 0) {
+            return;
+        }
 
         if (other.TryGetComponent<Enemy>(out var e))
         {

@@ -1,8 +1,7 @@
 using UnityEngine;
-
+//gpt
 public class PiercingCannonTower : Tower
 {
-    [Header("Tower Stats")]
     public float FireRate = 0.5f;
     public float Range = 8f;
 
@@ -62,6 +61,7 @@ public class PiercingCannonTower : Tower
 
     protected override void Die()
     {
+        PiercingCannonPlacementTracker.Instance?.Decrement();
         base.Die();
     }
 }

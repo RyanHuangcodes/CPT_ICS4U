@@ -15,9 +15,10 @@ public class SaveData
 
     public int BasePlaced;
     public int GoldMinePlaced;
-    public int MachineGunPlaced;        
+    public int MachineGunPlaced;
     public int DualMachineGunPlaced;
     public int CannonPlaced;
+    public int PiercingCannonPlaced;   
     public int MissileLauncherPlaced;
 
     public int CurrentWave;
@@ -38,9 +39,10 @@ public class SaveData
         List<EnemySaveData> enemies,
         int baseCount,
         int mineCount,
-        int machineGunCount,      
+        int machineGunCount,
         int dualMGCount,
         int cannonCount,
+        int piercingCannonCount,      
         int missileCount,
         int currentWave,
         int spawnedInWave,
@@ -51,28 +53,30 @@ public class SaveData
         int knifeTier
     )
     {
-        PlayerPosition         = playerPos;
-        Gold                   = gold;
-        Score                  = score;
-        PlayerHealth           = playerHealth;
-        PlayerMaxHealth        = playerMaxHealth;
-        Towers                 = towers;
-        Enemies                = enemies;
-        BasePlaced             = baseCount;
-        GoldMinePlaced         = mineCount;
-        MachineGunPlaced       = machineGunCount;
-        DualMachineGunPlaced   = dualMGCount;
-        CannonPlaced           = cannonCount;
-        MissileLauncherPlaced  = missileCount;
-        CurrentWave            = currentWave;
-        SpawnedInCurrentWave   = spawnedInWave;
-        TimeUntilNextSpawn     = timeUntilNextSpawn;
-        HealthMultiplier       = healthMul;
-        DamageMultiplier       = damageMul;
-        PostBossCycle          = postBossCycle;
-        KnifeTier              = knifeTier;
+        PlayerPosition = playerPos;
+        Gold = gold;
+        Score = score;
+        PlayerHealth = playerHealth;
+        PlayerMaxHealth = playerMaxHealth;
+        Towers = towers;
+        Enemies = enemies;
+        BasePlaced = baseCount;
+        GoldMinePlaced = mineCount;
+        MachineGunPlaced = machineGunCount;
+        DualMachineGunPlaced = dualMGCount;
+        CannonPlaced = cannonCount;
+        PiercingCannonPlaced = piercingCannonCount;
+        MissileLauncherPlaced = missileCount;
+        CurrentWave = currentWave;
+        SpawnedInCurrentWave = spawnedInWave;
+        TimeUntilNextSpawn = timeUntilNextSpawn;
+        HealthMultiplier = healthMul;
+        DamageMultiplier = damageMul;
+        PostBossCycle = postBossCycle;
+        KnifeTier = knifeTier;
     }
 }
+
 
 [Serializable]
 public class TowerSaveData
@@ -85,11 +89,11 @@ public class TowerSaveData
 
     public TowerSaveData(string type, Vector2 pos, int health, int maxHealth, int level)
     {
-        Type      = type;
-        Position  = pos;
-        Health    = health;
+        Type = type;
+        Position = pos;
+        Health = health;
         MaxHealth = maxHealth;
-        Level     = level;
+        Level = level;
     }
 }
 
@@ -102,8 +106,8 @@ public class EnemySaveData
 
     public EnemySaveData(string type, Vector2 pos, int health)
     {
-        Type     = type;
+        Type = type;
         Position = pos;
-        Health   = health;
+        Health = health;
     }
 }

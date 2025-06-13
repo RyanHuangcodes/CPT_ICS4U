@@ -1,5 +1,5 @@
 using UnityEngine;
-
+//gpt
 public class KnifeThrower : MonoBehaviour
 {
     public static KnifeThrower Instance { get; private set; }

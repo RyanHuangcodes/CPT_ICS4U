@@ -2,20 +2,13 @@ using UnityEngine;
 
 public class MachineGunTower : Tower
 {
-    [Header("Machine Gun Stats")]
     public float FireRate = 8f;
     public float Range = 5f;
     public int Damage = 2;
     public float KnockbackForce = 0.3f;
-
-    [Header("Muzzle Flash")]
     public GameObject MuzzleFlashPrefab;
     public float MuzzleFlashDuration = 0.2f;
-
-    [Header("Muzzle Offset (Local)")]
-    [Tooltip("Offset along the turret's local right (X) axis")]
     public float MuzzleOffsetX = 0f;
-    [Tooltip("Offset along the turret's local up (Y) axis")]
     public float MuzzleOffsetY = 0.5f;
 
     private float _fireCooldown;

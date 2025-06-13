@@ -16,7 +16,6 @@ public class HealthCoin : MonoBehaviour
             var player = other.GetComponent<Player>();
             if (player != null)
             {
-                // Increase max health and fully heal to new max
                 int newMax = player.GetMaxHealth() + BonusMaxHealth;
                 player.SetMaxHealth(newMax);
                 player.SetHealth(newMax);

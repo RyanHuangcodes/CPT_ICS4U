@@ -16,5 +16,6 @@ public class Base : Tower
     {
         Debug.Log("GAME OVER, score: tbd");
         SceneManager.LoadScene("LoseScene");
+        SaveManager.DeletePermanent();
     }
 }

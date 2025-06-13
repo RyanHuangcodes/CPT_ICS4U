@@ -1,40 +1,62 @@
-using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.Collections.Generic;
 
 public class MainMenu : MonoBehaviour
 {
-    void Start()
-    {
+    public UnpauseManager unpauseManager;
 
-    }
     public void PlayGame()
     {
-        SceneManager.LoadSceneAsync("GameScene");
+        SceneManager.LoadScene("GameScene");
     }
 
-    public void OpenPreferences()
+    public void SaveAndReturnToMenu()
     {
-        SceneManager.LoadSceneAsync("PreferencesScene");
+        var data = SaveManager.LoadQuick();
+        if (data != null)
+        {
+            SaveManager.SavePermanent(data);
+            SaveManager.DeleteQuick();
+        }
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    public void Continue()
+    {
+        var data = SaveManager.LoadPermanent();
+        if (data != null)
+        {
+            SaveManager.SaveQuick(data);
+        }
+        unpauseManager.ResumeGame();
+    }
+
+    public void DeletePermanentSave()
+    {
+        SaveManager.DeletePermanent();
     }
 
     public void ReturnToMenu()
     {
-        SceneManager.LoadSceneAsync("MainMenu");
-        //prevents gold from persisting between scenes
-        Destroy(GoldManager.Instance.gameObject);
-        SaveManager.DeleteSave();
+        SceneManager.LoadScene("MainMenu");
+        if (GoldManager.Instance != null)
+            Destroy(GoldManager.Instance.gameObject);
+        SaveManager.DeleteQuick();
+    }
+
+    public void OpenPreferences()
+    {
+        SceneManager.LoadScene("PreferencesScene");
     }
 
     public void PauseScreen()
     {
-        SceneManager.LoadSceneAsync("PauseScene");
+        SceneManager.LoadScene("PauseScene");
     }
 
     public void QuitGame()
     {
-        SaveManager.DeleteSave();
+        SaveManager.DeleteQuick();
         Application.Quit();
     }
 }

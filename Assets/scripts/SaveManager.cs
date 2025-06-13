@@ -1,29 +1,73 @@
-using UnityEngine;
 using System.IO;
-
+using UnityEngine;
+//gpt
 public static class SaveManager
 {
-    private static string path =
-        Path.Combine(Application.persistentDataPath, "player.json");
+    // Quick‐save used by PauseManager / UnpauseManager:
+    private static readonly string QuickSavePath =
+        Path.Combine(Application.persistentDataPath, "player_temp.json");
 
-    public static void SaveGame(SaveData data)
+    // Permanent save for “Continue Game”:
+    private static readonly string PermanentSavePath =
+        Path.Combine(Application.persistentDataPath, "player_save.json");
+
+    // ----- Quick‐save API -----
+
+    public static void SaveQuick(SaveData data)
     {
-        string json = JsonUtility.ToJson(data, true);
-        Debug.Log($"[SaveManager] JSON being written:\n{json}");
-        File.WriteAllText(path, json);
-        Debug.Log("Game saved to " + path);
+        WriteJson(QuickSavePath, data);
     }
 
-    public static SaveData LoadGame()
+    public static SaveData LoadQuick()
     {
-        if (!File.Exists(path)) return null;
-        string json = File.ReadAllText(path);
+        return ReadJson(QuickSavePath);
+    }
+
+    public static void DeleteQuick()
+    {
+        DeleteFile(QuickSavePath);
+    }
+
+    // ----- Permanent‐save API -----
+
+    public static void SavePermanent(SaveData data)
+    {
+        WriteJson(PermanentSavePath, data);
+    }
+
+    public static SaveData LoadPermanent()
+    {
+        return ReadJson(PermanentSavePath);
+    }
+
+    public static void DeletePermanent()
+    {
+        DeleteFile(PermanentSavePath);
+    }
+
+    // ----- internal helpers -----
+
+    private static void WriteJson(string fullPath, SaveData data)
+    {
+        string json = JsonUtility.ToJson(data, true);
+        File.WriteAllText(fullPath, json);
+        Debug.Log($"[SaveManager] Wrote JSON to {fullPath}");
+    }
+
+    private static SaveData ReadJson(string fullPath)
+    {
+        if (!File.Exists(fullPath))
+            return null;
+        string json = File.ReadAllText(fullPath);
         return JsonUtility.FromJson<SaveData>(json);
     }
 
-    public static void DeleteSave()
+    private static void DeleteFile(string fullPath)
     {
-        if (File.Exists(path))
-            File.Delete(path);
+        if (File.Exists(fullPath))
+        {
+            File.Delete(fullPath);
+            Debug.Log($"[SaveManager] Deleted save at {fullPath}");
+        }
     }
 }

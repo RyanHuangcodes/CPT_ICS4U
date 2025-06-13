@@ -9,14 +9,12 @@ public class MusicPlayer247 : MonoBehaviour
     {
         if (instance != null && instance != this)
         {
-            Debug.Log("Duplicate MusicPlayer detected, destroying this one.");
             Destroy(gameObject);
             return;
         }
 
         instance = this;
         DontDestroyOnLoad(gameObject);
-        Debug.Log("MusicPlayer is now persistent.");
 
         AudioSource audio = GetComponent<AudioSource>();
         if (!audio.isPlaying)

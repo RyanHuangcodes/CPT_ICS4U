@@ -7,6 +7,7 @@ public class PauseManager : MonoBehaviour
 {
     public void GoToPaused()
     {
+        // 1) Collect all game state into SaveData
         var player = GameObject.FindWithTag("Player");
         if (player == null)
         {
@@ -14,23 +15,26 @@ public class PauseManager : MonoBehaviour
             return;
         }
 
-        int gold = GoldManager.Instance.GetGold();
-        int score = ScoreManager.Instance?.GetScore() ?? 0;
+        int gold    = GoldManager.Instance.GetGold();
+        int score   = ScoreManager.Instance?.GetScore() ?? 0;
+        var ent     = player.GetComponent<Entity>();
+        int pHealth = ent.GetHealth();
+        int pMax    = ent.GetMaxHealth();
 
         var towerData = new List<TowerSaveData>();
         var towers = Object.FindObjectsByType<Tower>(
             FindObjectsInactive.Exclude,
             FindObjectsSortMode.None
         );
-        foreach (var tower in towers)
+        foreach (var tw in towers)
         {
-            string type = tower.name.Replace("(Clone)", "").Trim();
+            string type = tw.name.Replace("(Clone)", "").Trim();
             towerData.Add(new TowerSaveData(
                 type,
-                tower.transform.position,
-                tower.GetHealth(),
-                tower.GetMaxHealth(),
-                tower.GetLevel()
+                tw.transform.position,
+                tw.GetHealth(),
+                tw.GetMaxHealth(),
+                tw.GetLevel()
             ));
         }
 
@@ -39,60 +43,45 @@ public class PauseManager : MonoBehaviour
             FindObjectsInactive.Exclude,
             FindObjectsSortMode.None
         );
-        foreach (var enemy in enemies)
+        foreach (var en in enemies)
         {
-            string type = enemy.name.Replace("(Clone)", "").Trim();
+            string type = en.name.Replace("(Clone)", "").Trim();
             enemyData.Add(new EnemySaveData(
                 type,
-                enemy.transform.position,
-                enemy.GetHealth()
+                en.transform.position,
+                en.GetHealth()
             ));
         }
 
         var wm = WaveManager.Instance;
-        int currentWave        = wm.CurrentWave;
-        int spawnedThisWave    = wm.SpawnedInCurrentWave;
-        float timeUntilNext    = wm.TimeUntilNextSpawn;
-        float healthMul        = wm.CurrentHealthMultiplier;
-        float damageMul        = wm.CurrentDamageMultiplier;
-        int postBossCycle      = wm.PostBossCycle;
-        int knifeTier          = KnifeThrower.Instance.CurrentUpgradeTier;
-
-        var ent = player.GetComponent<Entity>();
-        int playerHealth    = ent.GetHealth();
-        int playerMaxHealth = ent.GetMaxHealth();
-
-        int baseCount       = BasePlacementTracker.Instance.GetPlacedCount();
-        int mineCount       = GoldMinePlacementTracker.Instance.GetPlacedCount();
-        int machineGunCount = MachineGunPlacementTracker.Instance.GetPlacedCount();  // ← new
-        int dualMGCount     = DualMachineGunPlacementTracker.Instance.GetPlacedCount();
-        int cannonCount     = CannonPlacementTracker.Instance.GetPlacedCount();
-        int missileCount    = MissileLauncherPlacementTracker.Instance.GetPlacedCount();
-
         var data = new SaveData(
             player.transform.position,
             gold,
             score,
-            playerHealth,
-            playerMaxHealth,
+            pHealth,
+            pMax,
             towerData,
             enemyData,
-            baseCount,
-            mineCount,
-            machineGunCount,
-            dualMGCount,
-            cannonCount,
-            missileCount,
-            currentWave,
-            spawnedThisWave,
-            timeUntilNext,
-            healthMul,
-            damageMul,
-            postBossCycle,
-            knifeTier
+            BasePlacementTracker.Instance.GetPlacedCount(),
+            GoldMinePlacementTracker.Instance.GetPlacedCount(),
+            MachineGunPlacementTracker.Instance.GetPlacedCount(),
+            DualMachineGunPlacementTracker.Instance.GetPlacedCount(),
+            CannonPlacementTracker.Instance.GetPlacedCount(),
+            PiercingCannonPlacementTracker.Instance.GetPlacedCount(),
+            MissileLauncherPlacementTracker.Instance.GetPlacedCount(),
+            wm.CurrentWave,
+            wm.SpawnedInCurrentWave,
+            wm.TimeUntilNextSpawn,
+            wm.CurrentHealthMultiplier,
+            wm.CurrentDamageMultiplier,
+            wm.PostBossCycle,
+            KnifeThrower.Instance.CurrentUpgradeTier
         );
 
-        SaveManager.SaveGame(data);
+        // 2) Quick‐save to temp file
+        SaveManager.SaveQuick(data);
+
+        // 3) Go to pause scene
         SceneManager.LoadScene("PauseScene");
     }
 }

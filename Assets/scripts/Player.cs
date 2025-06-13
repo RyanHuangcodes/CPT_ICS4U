@@ -50,7 +50,7 @@ public class Player : Entity
 
     protected override void Die()
     {
-        // Respawn at the Base when health reaches zero
+        // respawn at base
         GameObject baseObj = GameObject.FindGameObjectWithTag("Base");
         if (baseObj != null)
         {

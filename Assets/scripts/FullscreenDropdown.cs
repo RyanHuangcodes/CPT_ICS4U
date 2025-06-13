@@ -14,16 +14,11 @@ public class FullscreenTMPDropdownHandler : MonoBehaviour
             return;
         }
 
-        // Setup dropdown options
         List<string> options = new List<string> { "Fullscreen", "Windowed" };
         fullscreenDropdown.ClearOptions();
         fullscreenDropdown.AddOptions(options);
-
-        // Set initial dropdown value according to current fullscreen state
         fullscreenDropdown.value = Screen.fullScreen ? 0 : 1;
         fullscreenDropdown.RefreshShownValue();
-
-        // Add listener for dropdown value change
         fullscreenDropdown.onValueChanged.AddListener(OnDropdownValueChanged);
     }
 

@@ -1,5 +1,5 @@
 using UnityEngine;
-
+//gpt
 public class MissileLauncher : Tower
 {
     [Header("Launcher Stats")]
@@ -58,5 +58,6 @@ public class MissileLauncher : Tower
     protected override void Die()
     {
         base.Die();
+        MissileLauncherPlacementTracker.Instance?.Decrement();
     }
 }

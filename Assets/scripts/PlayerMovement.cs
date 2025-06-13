@@ -1,5 +1,5 @@
 using UnityEngine;
-
+//gpt
 public class PlayerMovement : MonoBehaviour
 {
     public float MoveSpeed = 5f;
@@ -9,8 +9,6 @@ public class PlayerMovement : MonoBehaviour
 
     private Animator _anim;
     private SpriteRenderer _spriteRenderer;
-
-    // Track last horizontal direction for flipping
     private bool facingRight = true;
 
     void Start()
@@ -28,8 +26,6 @@ public class PlayerMovement : MonoBehaviour
 
         bool isRunning = _moveDirection.magnitude > 0;
         _anim.SetBool("isRunning", isRunning);
-
-        // Only change flip if moving left or right
         if (moveX > 0)
         {
             facingRight = true;
@@ -40,7 +36,6 @@ public class PlayerMovement : MonoBehaviour
             facingRight = false;
             _spriteRenderer.flipX = true;
         }
-        // If moving only vertically, keep facing last horizontal direction (do nothing)
 
         transform.rotation = Quaternion.identity;
     }

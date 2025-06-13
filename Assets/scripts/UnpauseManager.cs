@@ -11,6 +11,7 @@ public class UnpauseManager : MonoBehaviour
     public GameObject MachineGunPrefab;
     public GameObject DualMachineGunPrefab;
     public GameObject CannonPrefab;
+    public GameObject PiercingCannonPrefab;
     public GameObject MissileLauncherPrefab;
 
     [Header("Enemy Prefabs")]
@@ -29,15 +30,15 @@ public class UnpauseManager : MonoBehaviour
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
 
-        var data = SaveManager.LoadGame();
+        // 1) Load quick‐save
+        var data = SaveManager.LoadQuick();
         if (data == null)
         {
+            Debug.LogWarning("[UnpauseManager] No save data found.");
             return;
         }
-        if (ScoreManager.Instance != null)
-            ScoreManager.Instance.SetScore(data.Score);
 
-        // Restore Player
+        // 2) Restore player
         var player = GameObject.FindWithTag("Player");
         if (player != null)
         {
@@ -46,21 +47,25 @@ public class UnpauseManager : MonoBehaviour
             ent.SetMaxHealth(data.PlayerMaxHealth);
             ent.SetHealth(data.PlayerHealth);
             var p = player.GetComponent<Player>();
-            if (p != null) p.UpdateHealthText();
+            if (p != null)
+                p.UpdateHealthText();
         }
 
-        // Restore Gold
+        // 3) Restore gold & score
         GoldManager.Instance.SetGold(data.Gold);
+        if (ScoreManager.Instance != null)
+            ScoreManager.Instance.SetScore(data.Score);
 
-        // Restore placement counts
+        // 4) Restore placement trackers
         BasePlacementTracker.Instance.SetPlacedCount(data.BasePlaced);
         GoldMinePlacementTracker.Instance.SetPlacedCount(data.GoldMinePlaced);
-        MachineGunPlacementTracker.Instance.SetPlacedCount(data.MachineGunPlaced);  
+        MachineGunPlacementTracker.Instance.SetPlacedCount(data.MachineGunPlaced);
         DualMachineGunPlacementTracker.Instance.SetPlacedCount(data.DualMachineGunPlaced);
         CannonPlacementTracker.Instance.SetPlacedCount(data.CannonPlaced);
+        PiercingCannonPlacementTracker.Instance.SetPlacedCount(data.PiercingCannonPlaced);
         MissileLauncherPlacementTracker.Instance.SetPlacedCount(data.MissileLauncherPlaced);
 
-        // Prefab lookup
+        // 5) Build prefab lookup
         _prefabMap = new Dictionary<string, GameObject>
         {
             { BasePrefab.name,            BasePrefab },
@@ -68,13 +73,14 @@ public class UnpauseManager : MonoBehaviour
             { MachineGunPrefab.name,      MachineGunPrefab },
             { DualMachineGunPrefab.name,  DualMachineGunPrefab },
             { CannonPrefab.name,          CannonPrefab },
+            { PiercingCannonPrefab.name,  PiercingCannonPrefab },
             { MissileLauncherPrefab.name, MissileLauncherPrefab },
             { CommonEnemyPrefab.name,     CommonEnemyPrefab }
         };
         if (BossEnemyPrefab != null)
             _prefabMap[BossEnemyPrefab.name] = BossEnemyPrefab;
 
-        // Restore Towers
+        // 6) Instantiate towers
         foreach (var t in data.Towers)
         {
             if (_prefabMap.TryGetValue(t.Type, out var pf))
@@ -88,7 +94,7 @@ public class UnpauseManager : MonoBehaviour
             }
         }
 
-        // Restore Wave State
+        // 7) Restore wave state
         var wm = WaveManager.Instance;
         wm.BaseTransform = GameObject.FindWithTag("Base")?.transform;
         wm.SetWaveState(
@@ -99,11 +105,9 @@ public class UnpauseManager : MonoBehaviour
             data.DamageMultiplier,
             data.PostBossCycle
         );
-
-        // Re-apply wave color entirely
         wm.ApplyWaveColor();
 
-        // Restore Enemies
+        // 8) Instantiate enemies
         foreach (var e in data.Enemies)
         {
             if (_prefabMap.TryGetValue(e.Type, out var pf))
@@ -114,11 +118,11 @@ public class UnpauseManager : MonoBehaviour
             }
         }
 
-        // Knife tier + shop UI
+        // 9) Knife tier & shop UI
         KnifeThrower.Instance?.SetUpgradeTier(data.KnifeTier);
         ShopManager.Instance?.RefreshUI();
 
-        // Finally start waves again
+        // 10) Start waves
         wm.StartWaves();
     }
 }

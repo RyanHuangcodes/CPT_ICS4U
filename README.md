@@ -25,6 +25,7 @@ Wood and stone
 Enemy class (inherits from entity)
 Boss class (inherits from enemy)
 Tower class 
+Weapon class for zombie (Aggregation)
 
 https://opengameart.org/art-search-advanced?keys=&field_art_type_tid%5B%5D=9&sort_by=count&sort_order=DESC use this for graphics
 
@@ -41,5 +42,22 @@ Enemy
 Whatever looks like a bad person
 boss enemy too
 Grid for map
+
+
+
+Sorting
+Ryan: zombie targeting
+Alex: sorting by distance to base targeting
+Darren: sort by enemy damage 
+
+Comp and agg
+Alex: SaveData
+Ryan: 
+
+Searching
+Alex: closest enemy linear search
+Darren
+Ryan
+
 
 

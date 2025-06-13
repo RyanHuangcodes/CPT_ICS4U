@@ -23,8 +23,8 @@ public class MainMenu : MonoBehaviour
     {
         SceneManager.LoadSceneAsync("MainMenu");
         //prevents gold from persisting between scenes
-        Destroy(GoldManager.Instance.gameObject); 
-        SaveManager.DeleteSave(); 
+        Destroy(GoldManager.Instance.gameObject);
+        SaveManager.DeleteSave();
     }
 
     public void PauseScreen()
@@ -34,7 +34,7 @@ public class MainMenu : MonoBehaviour
 
     public void QuitGame()
     {
-        SaveManager.DeleteSave(); 
+        SaveManager.DeleteSave();
         Application.Quit();
     }
 }

@@ -100,5 +100,4 @@ MonoBehaviour:
   Rb: {fileID: 0}
   MoveDirection: {x: 0, y: 0}
   LastAttackTime: 0
-  _bossAttackRange: 3
-  _bossAttackCooldown: 1.5
+  CoinPrefab: {fileID: 4850425145532035312, guid: 8d0f3e8a40e2f418a8bc7fef0545b7a3, type: 3}

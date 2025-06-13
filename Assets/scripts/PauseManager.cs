@@ -7,7 +7,6 @@ public class PauseManager : MonoBehaviour
 {
     public void GoToPaused()
     {
-        // 1) Player
         var player = GameObject.FindWithTag("Player");
         if (player == null)
         {
@@ -15,10 +14,9 @@ public class PauseManager : MonoBehaviour
             return;
         }
 
-        // 2) Gold
         int gold = GoldManager.Instance.GetGold();
+        int score = ScoreManager.Instance?.GetScore() ?? 0;
 
-        // 3) Towers — use the new API
         var towerData = new List<TowerSaveData>();
         var towers = Object.FindObjectsByType<Tower>(
             FindObjectsInactive.Exclude,
@@ -36,7 +34,6 @@ public class PauseManager : MonoBehaviour
             ));
         }
 
-        // 4) Enemies — also use the new API
         var enemyData = new List<EnemySaveData>();
         var enemies = Object.FindObjectsByType<Enemy>(
             FindObjectsInactive.Exclude,
@@ -52,38 +49,49 @@ public class PauseManager : MonoBehaviour
             ));
         }
 
-        // 5) Wave State
         var wm = WaveManager.Instance;
-        int   currentWave        = wm.CurrentWave;
-        int   spawnedThisWave    = wm.SpawnedInCurrentWave;
-        float timeUntilNextSpawn = wm.TimeUntilNextSpawn;
-        float healthMul          = wm.CurrentHealthMultiplier;
-        float damageMul          = wm.CurrentDamageMultiplier;
-        int   postBossCycle      = wm.PostBossCycle;
+        int currentWave        = wm.CurrentWave;
+        int spawnedThisWave    = wm.SpawnedInCurrentWave;
+        float timeUntilNext    = wm.TimeUntilNextSpawn;
+        float healthMul        = wm.CurrentHealthMultiplier;
+        float damageMul        = wm.CurrentDamageMultiplier;
+        int postBossCycle      = wm.PostBossCycle;
+        int knifeTier          = KnifeThrower.Instance.CurrentUpgradeTier;
 
-        // 6) Knife tier
-        int knifeTier = KnifeThrower.Instance.CurrentUpgradeTier;
+        var ent = player.GetComponent<Entity>();
+        int playerHealth    = ent.GetHealth();
+        int playerMaxHealth = ent.GetMaxHealth();
 
-        // 7) Build SaveData (including dual‐MG count)
+        int baseCount       = BasePlacementTracker.Instance.GetPlacedCount();
+        int mineCount       = GoldMinePlacementTracker.Instance.GetPlacedCount();
+        int machineGunCount = MachineGunPlacementTracker.Instance.GetPlacedCount();  // ← new
+        int dualMGCount     = DualMachineGunPlacementTracker.Instance.GetPlacedCount();
+        int cannonCount     = CannonPlacementTracker.Instance.GetPlacedCount();
+        int missileCount    = MissileLauncherPlacementTracker.Instance.GetPlacedCount();
+
         var data = new SaveData(
             player.transform.position,
             gold,
+            score,
+            playerHealth,
+            playerMaxHealth,
             towerData,
             enemyData,
-            BasePlacementTracker.Instance.GetPlacedCount(),
-            GoldMinePlacementTracker.Instance.GetPlacedCount(),
-            CannonPlacementTracker.Instance.GetPlacedCount(),
-            DualMachineGunPlacementTracker.Instance.GetPlacedCount(),
+            baseCount,
+            mineCount,
+            machineGunCount,
+            dualMGCount,
+            cannonCount,
+            missileCount,
             currentWave,
             spawnedThisWave,
-            timeUntilNextSpawn,
+            timeUntilNext,
             healthMul,
             damageMul,
             postBossCycle,
             knifeTier
         );
 
-        // 8) Save and switch to pause scene
         SaveManager.SaveGame(data);
         SceneManager.LoadScene("PauseScene");
     }

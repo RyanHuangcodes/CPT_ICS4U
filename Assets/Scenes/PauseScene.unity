@@ -872,6 +872,7 @@ MonoBehaviour:
   MachineGunPrefab: {fileID: 7038762841579107402, guid: 566c4cac67bf74a95841a057837d65de, type: 3}
   CannonPrefab: {fileID: 8683094548359234002, guid: b55c87d1c237f48a6ac6a15254444e15, type: 3}
   DualMachineGunPrefab: {fileID: 7065777169927643445, guid: 46a46b2cdabe045eeaa386dde0171365, type: 3}
+  MissileLauncherPrefab: {fileID: 538750912300102986, guid: 2420f98b1dc9e4bee91a8353a0f5374f, type: 3}
   CommonEnemyPrefab: {fileID: 4659418053672601474, guid: 85746f599db774ce8af14544b8b23f30, type: 3}
   BossEnemyPrefab: {fileID: 2575383361689831758, guid: 5b0a054b4c9e04a35acdf464d417729b, type: 3}
 --- !u!1 &1486307476

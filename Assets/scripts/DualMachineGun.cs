@@ -36,9 +36,7 @@ public class DualMachineGunTower : Tower
         if (_fireCooldown > 0f) return;
 
         // 1) find nearest enemy
-        Enemy target = EnemyFinder.FindClosestEnemyInRange(
-            (Vector2)transform.position, Range
-        );
+        Enemy target = EnemyFinder.FindClosestEnemyInRange((Vector2)transform.position, Range);
         if (target == null) return;
 
         // 2) aim the turret

@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class CannonPlacementTracker : MonoBehaviour
+public class MissileLauncherPlacementTracker : MonoBehaviour
 {
-    public static CannonPlacementTracker Instance;
+    public static MissileLauncherPlacementTracker Instance;
 
     private int _placedCount = 0;
 
@@ -11,7 +11,6 @@ public class CannonPlacementTracker : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
         else
         {

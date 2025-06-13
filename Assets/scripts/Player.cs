@@ -38,7 +38,7 @@ public class Player : Entity
         UpdateHealthText();
     }
 
-    private void UpdateHealthText()
+    public void UpdateHealthText()
     {
         if (HealthText != null)
         {

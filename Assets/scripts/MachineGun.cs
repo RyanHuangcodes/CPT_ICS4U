@@ -25,10 +25,6 @@ public class MachineGunTower : Tower
     {
         // base.Start();
         SetInitialized(true);
-        // SetHealth(100);
-        // SetMaxHealth(100);
-        // SetDamage(Damage);
-        // SetSpeed(0f);
 
         _fireCooldown = 0f;
         _rangeSquared = Range * Range;

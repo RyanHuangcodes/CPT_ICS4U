@@ -1,17 +1,16 @@
-// MissileLauncher.cs
 using UnityEngine;
 
 public class MissileLauncher : Tower
 {
     [Header("Launcher Stats")]
-    public float FireRate        = 0.5f;
-    public float Range           = 8f;
-    public int   Damage          = 25;
+    public float FireRate = 0.5f;
+    public float Range = 8f;
+    public int Damage = 25;
     public float ExplosionRadius = 2f;
-    public float KnockbackForce  = 1f;
+    public float KnockbackForce = 1f;
 
     [Header("Prefab & Muzzle")]
-    public Missile MissilePrefab;   // use the Missile type directly
+    public Missile MissilePrefab;   
     public Transform MuzzlePoint;
 
     private float _fireCooldown;
@@ -27,15 +26,13 @@ public class MissileLauncher : Tower
     {
         base.Update();
         _fireCooldown -= Time.deltaTime;
-        if (_fireCooldown > 0f)
-            return;
+        if (_fireCooldown > 0f) return;
 
-        Enemy target = EnemyFinder.FindClosestEnemyInRange((Vector2)transform.position, Range);
-        if (target == null)
-            return;
+        Enemy target = EnemyFinder.FindHighestHealthTarget((Vector2)transform.position, Range);
+        if (target == null) return;
 
-        Vector2 dir  = (target.transform.position - transform.position).normalized;
-        float   ang  = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg - 90f;
+        Vector2 dir = (target.transform.position - transform.position).normalized;
+        float   ang = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg - 90f;
         transform.rotation = Quaternion.Euler(0f, 0f, ang);
 
         SpawnAndLaunchMissile(dir);
@@ -46,7 +43,6 @@ public class MissileLauncher : Tower
     {
         if (MissilePrefab == null)
         {
-            Debug.LogError($"[{name}] MissilePrefab not set!");
             return;
         }
 
@@ -55,7 +51,6 @@ public class MissileLauncher : Tower
             : transform.position + (Vector3)direction * 1.2f;
         Quaternion spawnRot = transform.rotation;
 
-        // composition: missile is parented to the launcher
         Missile m = Instantiate(MissilePrefab, spawnPos, spawnRot, transform);
         m.Setup(direction, Damage, ExplosionRadius, KnockbackForce);
     }
@@ -63,6 +58,5 @@ public class MissileLauncher : Tower
     protected override void Die()
     {
         base.Die();
-        // all child missiles auto‐destroy with this object
     }
 }

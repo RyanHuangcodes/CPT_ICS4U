@@ -7,12 +7,9 @@ public class Tower : Entity
     [SerializeField]
     private int _level = 1;
 
-    [Header("Health Bar Setup")]
-    [Tooltip("Drag the HealthBar GameObject here (child of this tower)")]
     [SerializeField]
     private GameObject _healthBarRoot;
 
-    [Tooltip("Drag the Fill child Transform here")]
     [SerializeField]
     private Transform _fillTransform;
 
@@ -85,8 +82,8 @@ public class Tower : Entity
             scale.x = pct;
             _fillTransform.localScale = scale;
             float halfFull = _initialFillScaleX * 0.5f;
-            float halfNow  = scale.x * 0.5f;
-            Vector3 pos    = _initialFillLocalPos;
+            float halfNow = scale.x * 0.5f;
+            Vector3 pos = _initialFillLocalPos;
             pos.x = halfNow-halfFull-0.5f;
             _fillTransform.localPosition = pos;
         }

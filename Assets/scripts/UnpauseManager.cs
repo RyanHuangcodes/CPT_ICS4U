@@ -9,12 +9,13 @@ public class UnpauseManager : MonoBehaviour
     public GameObject BasePrefab;
     public GameObject GoldMinePrefab;
     public GameObject MachineGunPrefab;
+    public GameObject DualMachineGunPrefab;
     public GameObject CannonPrefab;
-    public GameObject DualMachineGunPrefab;  
+    public GameObject MissileLauncherPrefab;
 
     [Header("Enemy Prefabs")]
     public GameObject CommonEnemyPrefab;
-    public GameObject BossEnemyPrefab;       
+    public GameObject BossEnemyPrefab;
 
     private Dictionary<string, GameObject> _prefabMap;
 
@@ -31,75 +32,65 @@ public class UnpauseManager : MonoBehaviour
         var data = SaveManager.LoadGame();
         if (data == null)
         {
-            Debug.LogWarning("[UnpauseManager] No save data found.");
             return;
         }
+        if (ScoreManager.Instance != null)
+            ScoreManager.Instance.SetScore(data.Score);
 
-        // Restore player position and gold
+        // Restore Player
         var player = GameObject.FindWithTag("Player");
         if (player != null)
         {
             player.transform.position = data.PlayerPosition;
+            var ent = player.GetComponent<Entity>();
+            ent.SetMaxHealth(data.PlayerMaxHealth);
+            ent.SetHealth(data.PlayerHealth);
+            var p = player.GetComponent<Player>();
+            if (p != null) p.UpdateHealthText();
         }
+
+        // Restore Gold
         GoldManager.Instance.SetGold(data.Gold);
 
-        // Restore placement trackers
+        // Restore placement counts
         BasePlacementTracker.Instance.SetPlacedCount(data.BasePlaced);
         GoldMinePlacementTracker.Instance.SetPlacedCount(data.GoldMinePlaced);
+        MachineGunPlacementTracker.Instance.SetPlacedCount(data.MachineGunPlaced);  
+        DualMachineGunPlacementTracker.Instance.SetPlacedCount(data.DualMachineGunPlaced);
         CannonPlacementTracker.Instance.SetPlacedCount(data.CannonPlaced);
-        DualMachineGunPlacementTracker.Instance.SetPlacedCount(data.DualMachineGunPlaced);  // ← new
+        MissileLauncherPlacementTracker.Instance.SetPlacedCount(data.MissileLauncherPlaced);
 
-        // Build prefab lookup
+        // Prefab lookup
         _prefabMap = new Dictionary<string, GameObject>
         {
-            { BasePrefab.name,         BasePrefab         },
-            { GoldMinePrefab.name,     GoldMinePrefab     },
-            { MachineGunPrefab.name,   MachineGunPrefab   },
-            { CannonPrefab.name,       CannonPrefab       },
-            { DualMachineGunPrefab.name, DualMachineGunPrefab },  // ← new
-            { CommonEnemyPrefab.name,  CommonEnemyPrefab  }
+            { BasePrefab.name,            BasePrefab },
+            { GoldMinePrefab.name,        GoldMinePrefab },
+            { MachineGunPrefab.name,      MachineGunPrefab },
+            { DualMachineGunPrefab.name,  DualMachineGunPrefab },
+            { CannonPrefab.name,          CannonPrefab },
+            { MissileLauncherPrefab.name, MissileLauncherPrefab },
+            { CommonEnemyPrefab.name,     CommonEnemyPrefab }
         };
         if (BossEnemyPrefab != null)
-        {
             _prefabMap[BossEnemyPrefab.name] = BossEnemyPrefab;
-        }
 
-        // Restore towers
+        // Restore Towers
         foreach (var t in data.Towers)
         {
             if (_prefabMap.TryGetValue(t.Type, out var pf))
             {
                 var go = Instantiate(pf, t.Position, Quaternion.identity);
-                var comp = go.GetComponent<Tower>();
-                comp.SetMaxHealth(t.MaxHealth);
-                comp.SetHealth(t.Health);
-                comp.SetLevel(t.Level);
-                comp.SetInitialized(true);
-            }
-            else
-            {
-                Debug.LogWarning($"No prefab for tower '{t.Type}'");
+                var tw = go.GetComponent<Tower>();
+                tw.SetMaxHealth(t.MaxHealth);
+                tw.SetHealth(t.Health);
+                tw.SetLevel(t.Level);
+                tw.SetInitialized(true);
             }
         }
 
-        // Restore enemies
-        foreach (var e in data.Enemies)
-        {
-            if (_prefabMap.TryGetValue(e.Type, out var pf))
-            {
-                var go = Instantiate(pf, e.Position, Quaternion.identity);
-                var comp = go.GetComponent<Entity>();
-                comp.SetHealth(e.Health);
-            }
-            else
-            {
-                Debug.LogWarning($"No prefab for enemy '{e.Type}'");
-            }
-        }
-
-        // Restore wave state
+        // Restore Wave State
         var wm = WaveManager.Instance;
-        wm.BaseTransform = GameObject.FindWithTag("Base").transform;
+        wm.BaseTransform = GameObject.FindWithTag("Base")?.transform;
         wm.SetWaveState(
             data.CurrentWave,
             data.SpawnedInCurrentWave,
@@ -109,16 +100,25 @@ public class UnpauseManager : MonoBehaviour
             data.PostBossCycle
         );
 
-        // Restore knife tier and refresh shop UI
-        if (KnifeThrower.Instance != null)
+        // Re-apply wave color entirely
+        wm.ApplyWaveColor();
+
+        // Restore Enemies
+        foreach (var e in data.Enemies)
         {
-            KnifeThrower.Instance.SetUpgradeTier(data.KnifeTier);
-        }
-        if (ShopManager.Instance != null)
-        {
-            ShopManager.Instance.RefreshUI();
+            if (_prefabMap.TryGetValue(e.Type, out var pf))
+            {
+                var go = Instantiate(pf, e.Position, Quaternion.identity);
+                var entEnemy = go.GetComponent<Entity>();
+                entEnemy.SetHealth(e.Health);
+            }
         }
 
+        // Knife tier + shop UI
+        KnifeThrower.Instance?.SetUpgradeTier(data.KnifeTier);
+        ShopManager.Instance?.RefreshUI();
+
+        // Finally start waves again
         wm.StartWaves();
     }
 }

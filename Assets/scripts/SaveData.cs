@@ -7,13 +7,18 @@ public class SaveData
 {
     public Vector2 PlayerPosition;
     public int Gold;
+    public int Score;
+    public int PlayerHealth;
+    public int PlayerMaxHealth;
     public List<TowerSaveData> Towers;
     public List<EnemySaveData> Enemies;
 
     public int BasePlaced;
     public int GoldMinePlaced;
+    public int MachineGunPlaced;        
+    public int DualMachineGunPlaced;
     public int CannonPlaced;
-    public int DualMachineGunPlaced;     
+    public int MissileLauncherPlaced;
 
     public int CurrentWave;
     public int SpawnedInCurrentWave;
@@ -26,12 +31,17 @@ public class SaveData
     public SaveData(
         Vector2 playerPos,
         int gold,
+        int score,
+        int playerHealth,
+        int playerMaxHealth,
         List<TowerSaveData> towers,
         List<EnemySaveData> enemies,
         int baseCount,
         int mineCount,
+        int machineGunCount,      
+        int dualMGCount,
         int cannonCount,
-        int dualMachineGunCount,         
+        int missileCount,
         int currentWave,
         int spawnedInWave,
         float timeUntilNextSpawn,
@@ -41,21 +51,26 @@ public class SaveData
         int knifeTier
     )
     {
-        PlayerPosition           = playerPos;
-        Gold                     = gold;
-        Towers                   = towers;
-        Enemies                  = enemies;
-        BasePlaced               = baseCount;
-        GoldMinePlaced           = mineCount;
-        CannonPlaced             = cannonCount;
-        DualMachineGunPlaced     = dualMachineGunCount;  
-        CurrentWave              = currentWave;
-        SpawnedInCurrentWave     = spawnedInWave;
-        TimeUntilNextSpawn       = timeUntilNextSpawn;
-        HealthMultiplier         = healthMul;
-        DamageMultiplier         = damageMul;
-        PostBossCycle            = postBossCycle;
-        KnifeTier                = knifeTier;
+        PlayerPosition         = playerPos;
+        Gold                   = gold;
+        Score                  = score;
+        PlayerHealth           = playerHealth;
+        PlayerMaxHealth        = playerMaxHealth;
+        Towers                 = towers;
+        Enemies                = enemies;
+        BasePlaced             = baseCount;
+        GoldMinePlaced         = mineCount;
+        MachineGunPlaced       = machineGunCount;
+        DualMachineGunPlaced   = dualMGCount;
+        CannonPlaced           = cannonCount;
+        MissileLauncherPlaced  = missileCount;
+        CurrentWave            = currentWave;
+        SpawnedInCurrentWave   = spawnedInWave;
+        TimeUntilNextSpawn     = timeUntilNextSpawn;
+        HealthMultiplier       = healthMul;
+        DamageMultiplier       = damageMul;
+        PostBossCycle          = postBossCycle;
+        KnifeTier              = knifeTier;
     }
 }
 

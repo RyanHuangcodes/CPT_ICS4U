@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Enemy : Entity
 {
+    public int ScoreValue = 10;
     public Transform BaseTransform;
     public LayerMask ObstacleLayers;
     public float AttackRange = 2f;
@@ -110,6 +111,9 @@ public class Enemy : Entity
 
     protected override void Die()
     {
+        if (ScoreManager.Instance != null) {
+            ScoreManager.Instance.AddScore(ScoreValue);
+        }
         Debug.Log("Enemy died");
         base.Die();
     }

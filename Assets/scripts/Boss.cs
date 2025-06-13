@@ -5,6 +5,7 @@ public class Boss : Enemy
 
     private float _bossAttackRange    = 3f;
     private float _bossAttackCooldown = 1.5f;
+    public GameObject CoinPrefab;
 
     protected override void Start()
     {
@@ -98,5 +99,25 @@ public class Boss : Enemy
 
     public override void ApplyKnockback(Vector2 distanceIrection, float force)
     {
+        //override enemy.cs so there is no knockback
+    }
+
+    protected override void Die()
+    {
+        if (CoinPrefab != null)
+        {
+            Instantiate(CoinPrefab, transform.position, Quaternion.identity);
+        }
+        base.Die();
+    }
+
+    private new void Awake()
+    {
+        base.Awake();  
+        SpriteRenderer sr = GetComponentInChildren<SpriteRenderer>();
+        if (sr != null)
+        {
+            sr.color = Color.white;
+        }
     }
 }

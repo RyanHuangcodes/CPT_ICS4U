@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class DraggableTowerUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     [Header("Tower Settings")]
-    public GameObject TowerPrefab;    // Prefab to spawn (Base, GoldMine, MachineGun, DualMachineGun, Cannon)
+    public GameObject TowerPrefab;    // Prefab to spawn (Base, GoldMine, MachineGun, DualMachineGun, Cannon, MissileLauncher)
     public LayerMask PlayerLayer;     // LayerMask for Player collisions
     public LayerMask TowerLayer;      // LayerMask for existing towers
     public int MaxAllowed = 4;        // Maximum of this tower type
@@ -23,6 +23,7 @@ public class DraggableTowerUI : MonoBehaviour, IBeginDragHandler, IDragHandler, 
 
     private void Start()
     {
+        // Initialize placed count from the correct tracker
         if (TowerPrefab.name.Contains("Base"))
         {
             _placedCount = BasePlacementTracker.Instance?.GetPlacedCount() ?? 0;
@@ -42,6 +43,10 @@ public class DraggableTowerUI : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         else if (TowerPrefab.name.Contains("Cannon"))
         {
             _placedCount = CannonPlacementTracker.Instance?.GetPlacedCount() ?? 0;
+        }
+        else if (TowerPrefab.name.Contains("MissileLauncher"))
+        {
+            _placedCount = MissileLauncherPlacementTracker.Instance?.GetPlacedCount() ?? 0;
         }
 
         UpdatePlacementText();
@@ -71,6 +76,10 @@ public class DraggableTowerUI : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         {
             current = CannonPlacementTracker.Instance.GetPlacedCount();
         }
+        else if (TowerPrefab.name.Contains("MissileLauncher"))
+        {
+            current = MissileLauncherPlacementTracker.Instance.GetPlacedCount();
+        }
 
         if (current != _placedCount)
         {
@@ -86,25 +95,12 @@ public class DraggableTowerUI : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         _previewRenderer.color = _invalidColor;
         _preview.GetComponent<Collider2D>().enabled = false;
 
-        foreach (var mg in _preview.GetComponentsInChildren<MachineGunTower>())
-        {
-            mg.enabled = false;
-        }
-
-        foreach (var dmg in _preview.GetComponentsInChildren<DualMachineGunTower>())
-        {
-            dmg.enabled = false;
-        }
-
-        foreach (var c in _preview.GetComponentsInChildren<Cannon>())
-        {
-            c.enabled = false;
-        }
-
-        foreach (var t in _preview.GetComponentsInChildren<Tower>())
-        {
-            t.enabled = false;
-        }
+        // disable any tower logic on the preview
+        foreach (var mg in _preview.GetComponentsInChildren<MachineGunTower>())   mg.enabled = false;
+        foreach (var dmg in _preview.GetComponentsInChildren<DualMachineGunTower>()) dmg.enabled = false;
+        foreach (var c in _preview.GetComponentsInChildren<Cannon>())             c.enabled = false;
+        foreach (var ml in _preview.GetComponentsInChildren<MissileLauncher>())   ml.enabled = false;
+        foreach (var t in _preview.GetComponentsInChildren<Tower>())             t.enabled = false;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -113,8 +109,8 @@ public class DraggableTowerUI : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         worldPos.z = 0f;
         _preview.transform.position = worldPos;
 
-        if (!TowerPrefab.name.Contains("Base") &&
-            (BasePlacementTracker.Instance?.GetPlacedCount() ?? 0) == 0)
+        if (!TowerPrefab.name.Contains("Base")
+            && (BasePlacementTracker.Instance?.GetPlacedCount() ?? 0) == 0)
         {
             _previewRenderer.color = _invalidColor;
             return;
@@ -129,8 +125,8 @@ public class DraggableTowerUI : MonoBehaviour, IBeginDragHandler, IDragHandler, 
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         worldPos.z = 0f;
 
-        if (!TowerPrefab.name.Contains("Base") &&
-            (BasePlacementTracker.Instance?.GetPlacedCount() ?? 0) == 0)
+        if (!TowerPrefab.name.Contains("Base")
+            && (BasePlacementTracker.Instance?.GetPlacedCount() ?? 0) == 0)
         {
             Debug.Log($"Cannot place {TowerPrefab.name} before placing a Base.");
             Destroy(_preview);
@@ -168,6 +164,11 @@ public class DraggableTowerUI : MonoBehaviour, IBeginDragHandler, IDragHandler, 
                 CannonPlacementTracker.Instance.Increment();
                 _placedCount = CannonPlacementTracker.Instance.GetPlacedCount();
             }
+            else if (TowerPrefab.name.Contains("MissileLauncher"))
+            {
+                MissileLauncherPlacementTracker.Instance.Increment();
+                _placedCount = MissileLauncherPlacementTracker.Instance.GetPlacedCount();
+            }
 
             UpdatePlacementText();
         }
@@ -177,21 +178,9 @@ public class DraggableTowerUI : MonoBehaviour, IBeginDragHandler, IDragHandler, 
 
     private bool IsValidPlacement(Vector3 position)
     {
-        if (_placedCount >= MaxAllowed)
-        {
-            return false;
-        }
-
-        if (Physics2D.OverlapBox(position, _towerSize + Vector2.one * _checkRadius, 0f, PlayerLayer) != null)
-        {
-            return false;
-        }
-
-        if (Physics2D.OverlapBox(position, _towerSize + Vector2.one * _checkRadius, 0f, TowerLayer) != null)
-        {
-            return false;
-        }
-
+        if (_placedCount >= MaxAllowed) return false;
+        if (Physics2D.OverlapBox(position, _towerSize + Vector2.one * _checkRadius, 0f, PlayerLayer) != null) return false;
+        if (Physics2D.OverlapBox(position, _towerSize + Vector2.one * _checkRadius, 0f, TowerLayer) != null) return false;
         return true;
     }
 
